@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create user</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <script>
+        window.onload = async () => {
+            const rolesSelect = document.getElementById("user-role-dropdown")
+<!--            const roles = await fetchAllRoles();-->
+<!--            roles.forEach(role => {-->
+<!--                rolesSelect.add(new Option(role.name, role.id))-->
+<!--            });-->
+            rolesSelect.add(new Option('ADMIN', 1))
+            rolesSelect.add(new Option('USER', 2))
+        }
+
+        async function saveUser() {
+            console.log(getSelectValues(document.getElementById("user-role-dropdown")));
+            const nameInput = document.getElementById("user-name-input")
+            const surnameInput = document.getElementById("user-surname-input")
+            const mobileNumberInput = document.getElementById("user-mobileNumber-input")
+            const emailInput = document.getElementById("user-email-input")
+            const loginInput = document.getElementById("user-login-input")
+            const passwordInput = document.getElementById("user-password-input")
+            const roleDropdown = document.getElementById("user-role-dropdown")
+            const user = { name: nameInput.value, surname: surnameInput.value,
+                            mobileNumber: mobileNumberInput.value, email: emailInput.value,
+                            login: loginInput.value, password: passwordInput.value,
+                            role: roleDropdown.value}
+            const response = await fetch("/api/users", {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)});
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        function getSelectValues(select) {
+          var result = [];
+          var options = select && select.options;
+          var opt;
+
+          for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+              result.push(opt.value || opt.text);
+            }
+          }
+          return result;
+        }
+    </script>
+</head>
+<body>
+
+<form id="create-form" action="create.html">
+    <h3>Create new user:</h3>
+
+    <div class="row">
+        <label for="user-name-input">Name:</label>
+        <input id="user-name-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="user-surname-input">Surname:</label>
+        <input id="user-surname-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="user-mobileNumber-input">mobileNumber:</label>
+        <input id="user-mobileNumber-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="user-email-input">email:</label>
+        <input id="user-email-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="user-login-input">login:</label>
+        <input id="user-login-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="user-password-input">password:</label>
+        <input id="user-password-input" name="title" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="user-role-dropdown">Role:</label>
+        <select id="user-role-dropdown" name="roleId">
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="saveUser()">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
