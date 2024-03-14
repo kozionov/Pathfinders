@@ -39,7 +39,7 @@
             const user = { name: nameInput.value, surname: surnameInput.value,
                             mobileNumber: mobileNumberInput.value, email: emailInput.value,
                             login: loginInput.value, password: passwordInput.value,
-                            role: roleDropdown.value}
+                            roleId: roleDropdown.value}
             const response = await fetch("/api/users", {
                 method: 'POST',
                 headers: {
