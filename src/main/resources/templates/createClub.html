@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create club</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <script>
+        window.onload = async () => {
+            const rolesSelect = document.getElementById("club-role-dropdown")
+            const roles = await fetchAllRoles();
+            roles.forEach(role => {
+                rolesSelect.add(new Option(role.roleName, role.id))
+            });
+        }
+
+        async function saveClub() {
+            console.log(getSelectValues(document.getElementById("club-role-dropdown")));
+            const nameInput = document.getElementById("club-name-input")
+            const surnameInput = document.getElementById("club-surname-input")
+            const mobileNumberInput = document.getElementById("club-mobileNumber-input")
+            const emailInput = document.getElementById("club-email-input")
+            const loginInput = document.getElementById("club-login-input")
+            const passwordInput = document.getElementById("club-password-input")
+            const roleDropdown = document.getElementById("club-role-dropdown")
+            const club = { name: nameInput.value, surname: surnameInput.value,
+                            mobileNumber: mobileNumberInput.value, email: emailInput.value,
+                            login: loginInput.value, password: passwordInput.value,
+                            roleId: roleDropdown.value}
+            const response = await fetch("/api/clubs", {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(club)});
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        function getSelectValues(select) {
+          var result = [];
+          var options = select && select.options;
+          var opt;
+
+          for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+              result.push(opt.value || opt.text);
+            }
+          }
+          return result;
+        }
+    </script>
+</head>
+<body>
+
+<form id="create-form" action="create.html">
+    <h3>Create new club:</h3>
+
+    <div class="row">
+        <label for="club-name-input">Name:</label>
+        <input id="club-name-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-surname-input">Surname:</label>
+        <input id="club-surname-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-mobileNumber-input">mobileNumber:</label>
+        <input id="club-mobileNumber-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-email-input">email:</label>
+        <input id="club-email-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-login-input">login:</label>
+        <input id="club-login-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-password-input">password:</label>
+        <input id="club-password-input" name="title" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="club-role-dropdown">Role:</label>
+        <select id="club-role-dropdown" name="roleId">
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="saveClub()">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
