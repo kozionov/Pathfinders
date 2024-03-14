@@ -10,6 +10,6 @@ public record UserUpdateDto(@NotBlank Long id,
                             String email,
                             @NotNull String login,
                             @NotNull String password,
-                            @NotNull String role) {
+                            @NotNull long roleId) {
 
 }

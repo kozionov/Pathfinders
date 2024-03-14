@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "scores")
 public class Score {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +18,6 @@ public class Score {
     private String name;
 
     @Column
-    private Integer value;
+    private Integer val;
 
 }

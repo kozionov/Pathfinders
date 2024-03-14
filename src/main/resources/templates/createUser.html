@@ -21,12 +21,10 @@
     <script>
         window.onload = async () => {
             const rolesSelect = document.getElementById("user-role-dropdown")
-<!--            const roles = await fetchAllRoles();-->
-<!--            roles.forEach(role => {-->
-<!--                rolesSelect.add(new Option(role.name, role.id))-->
-<!--            });-->
-            rolesSelect.add(new Option('ADMIN', 1))
-            rolesSelect.add(new Option('USER', 2))
+            const roles = await fetchAllRoles();
+            roles.forEach(role => {
+                rolesSelect.add(new Option(role.roleName, role.id))
+            });
         }
 
         async function saveUser() {

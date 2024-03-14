@@ -21,3 +21,9 @@ async function fetchUserById(id) {
   const user = await response.json();
   return user;
 }
+
+async function fetchAllRoles() {
+  const rolesResponse = await fetch("/api/roles");
+  const roles = await rolesResponse.json();
+  return roles;
+}
