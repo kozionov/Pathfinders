@@ -2,11 +2,12 @@ package ru.otus.hw.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.dto.UserCreateDto;
 import ru.otus.hw.dto.UserDto;
 import ru.otus.hw.dto.UserUpdateDto;
+import ru.otus.hw.security.UserPrincipal;
 import ru.otus.hw.services.UserService;
 
 import java.util.List;
@@ -43,11 +44,12 @@ public class UserController {
     }
 
     @GetMapping("/api/directors")
-    public List<UserDto> getAllDirectors(/*SecurityContext context*/) {
-//        if (context.isUserInRole("ADMIN")) {
-//            return userService.findAllByRole(1L);
-//        } else {
+    public List<UserDto> getAllDirectors() {
+        UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.getRole().equals("ADMIN")) {
             return userService.findAll();
-//        }
+        } else {
+            return userService.findAllByRole(2L);
+        }
     }
 }
