@@ -22,5 +22,10 @@ values ('Comment_1', 1), ('Comment_2', 1), ('Comment_2', 2), ('Comment_3', 3);
 insert into role(role_name)
 values ('ADMIN'), ('DIRECTOR'), ('USER');
 
+insert into scores(name, val)
+values ('Поведение', 1), ('Галстук', 1), ('ДЗ', 2);
+
 insert into users(login, password, role_id, name)
-values ('admin', '$2a$10$SdGnZ4OyVPTWf.EGjljD1.lzS2Nt9gUj2CSSR90Isoqdf2gBM7b/C', 1, 'admin'), ('user', '$2a$10$KIH3lk/U7xlD5cpugEG.COJpja47vyo0bowimelzS5poHhCu4WYfa', 3, 'user');
+values ('admin', '$2a$10$SdGnZ4OyVPTWf.EGjljD1.lzS2Nt9gUj2CSSR90Isoqdf2gBM7b/C', 1, 'admin'),
+('user', '$2a$10$KIH3lk/U7xlD5cpugEG.COJpja47vyo0bowimelzS5poHhCu4WYfa', 3, 'user'),
+('dir', '$2a$10$k9E9KzDf8hciEIAuSJF3ZO883TTqegesnORcC8sDU83JTdpRpGYp6', 2, 'dir');

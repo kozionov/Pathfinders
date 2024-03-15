@@ -25,10 +25,19 @@ public class PagesController {
     public String userCreatePage() {
         return "createUser";
     }
+    @GetMapping("/user/edit")
+    public String userEditPage() {
+        return "editUser";
+    }
 
     @GetMapping("/club/create")
     public String clubCreatePage() {
         return "createClub";
+    }
+
+    @GetMapping("/club/edit")
+    public String clubEditPage() {
+        return "editClub";
     }
 
     @GetMapping("/book/edit")

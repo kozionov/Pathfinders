@@ -1,8 +1,6 @@
 package ru.otus.hw.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +24,12 @@ public class User {
     @Column
     private String surname;
 
-    @Pattern(regexp = "\\d{10}", message = "Phone number should be 10 digits")
+    //    @Pattern(regexp = "\\d{10}", message = "Phone number should be 10 digits")
+    @Column
     private String mobileNumber;
 
-    @Email(message = "Email should be valid")
+    //    @Email(message = "Email should be valid")
+    @Column
     private String email;
 
     @Column(nullable = false)

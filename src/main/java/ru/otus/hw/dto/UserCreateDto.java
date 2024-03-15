@@ -1,5 +1,6 @@
 package ru.otus.hw.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 public record UserCreateDto(@NotNull String name,

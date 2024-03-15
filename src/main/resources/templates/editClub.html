@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create club</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <script>
+        window.onload = async () => {
+            const directorSelect = document.getElementById("club-director-dropdown")
+            const directors = await fetchAllDirectors();
+            directors.forEach(director => {
+            console.log(director.name);
+            console.log(director.id);
+                directorSelect.add(new Option(director.name, director.id))
+            });
+        }
+
+        async function updateClub() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clubIdParam = urlParams.get('id');
+
+            const nameInput = document.getElementById("club-name-input")
+            const cityInput = document.getElementById("club-city-input")
+            const directorDropdown = document.getElementById("club-director-dropdown")
+            const scoreDropdown = document.getElementById("club-score-dropdown")
+            const club = {id:clubIdParam, name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value,
+            membersId: ,
+            scoresId:getSelectValues(scoreDropdown),
+            logsId:,
+            }
+
+            const response = await fetch("/api/clubs/" + clubidParam, {
+                method: 'PUT',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(club)});
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        function getSelectValues(select) {
+          var result = [];
+          var options = select && select.options;
+          var opt;
+
+          for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+              result.push(opt.value || opt.text);
+            }
+          }
+          return result;
+        }
+    </script>
+</head>
+<body>
+
+<form id="create-form" action="create.html">
+    <h3>Create new club:</h3>
+
+    <div class="row">
+        <label for="club-name-input">Name:</label>
+        <input id="club-name-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-city-input">City:</label>
+        <input id="club-city-input" name="title" type="text"/>
+    </div>
+    <div class="row">
+        <label for="club-director-dropdown">Director:</label>
+        <select id="club-director-dropdown" name="directorId">
+        </select>
+    </div>
+    <div class="row">
+        <label for="club-score-dropdown">Scores:</label>
+        <select id="club-score-dropdown" name="scoreId" multiple="multiple">
+        </select>
+    </div>
+    <div class="row">
+        <button type="button" onclick="updateClub()">Update</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
