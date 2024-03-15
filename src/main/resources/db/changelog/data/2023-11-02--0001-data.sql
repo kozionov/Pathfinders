@@ -22,5 +22,5 @@ values ('Comment_1', 1), ('Comment_2', 1), ('Comment_2', 2), ('Comment_3', 3);
 insert into role(role_name)
 values ('ADMIN'), ('DIRECTOR'), ('USER');
 
-insert into users(login, password, role_id)
-values ('admin', '$2a$10$SdGnZ4OyVPTWf.EGjljD1.lzS2Nt9gUj2CSSR90Isoqdf2gBM7b/C', 1), ('user', '$2a$10$KIH3lk/U7xlD5cpugEG.COJpja47vyo0bowimelzS5poHhCu4WYfa', 3);
+insert into users(login, password, role_id, name)
+values ('admin', '$2a$10$SdGnZ4OyVPTWf.EGjljD1.lzS2Nt9gUj2CSSR90Isoqdf2gBM7b/C', 1, 'admin'), ('user', '$2a$10$KIH3lk/U7xlD5cpugEG.COJpja47vyo0bowimelzS5poHhCu4WYfa', 3, 'user');

@@ -2,6 +2,7 @@ package ru.otus.hw.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.dto.UserCreateDto;
 import ru.otus.hw.dto.UserDto;
@@ -39,5 +40,14 @@ public class UserController {
     @DeleteMapping("/api/users/{id}")
     public void deleteUser(@PathVariable("id") long id) {
         userService.deleteById(id);
+    }
+
+    @GetMapping("/api/directors")
+    public List<UserDto> getAllDirectors(/*SecurityContext context*/) {
+//        if (context.isUserInRole("ADMIN")) {
+//            return userService.findAllByRole(1L);
+//        } else {
+            return userService.findAll();
+//        }
     }
 }

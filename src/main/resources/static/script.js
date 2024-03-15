@@ -27,3 +27,8 @@ async function fetchAllRoles() {
   const roles = await rolesResponse.json();
   return roles;
 }
+async function fetchAllDirectors() {
+  const directorsResponse = await fetch("/api/directors");
+  const directors = await directorsResponse.json();
+  return directors;
+}

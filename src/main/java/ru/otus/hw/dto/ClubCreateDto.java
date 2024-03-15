@@ -20,6 +20,6 @@ public class ClubCreateDto {
 
     private String city;
 
-    private User director;
+    private Long directorId;
 
 }

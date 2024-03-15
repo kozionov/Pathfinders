@@ -20,26 +20,21 @@
     <script src="../static/script.js" th:src="@{/script.js}"></script>
     <script>
         window.onload = async () => {
-            const rolesSelect = document.getElementById("club-role-dropdown")
-            const roles = await fetchAllRoles();
-            roles.forEach(role => {
-                rolesSelect.add(new Option(role.roleName, role.id))
+            const directorSelect = document.getElementById("club-director-dropdown")
+            const directors = await fetchAllDirectors();
+            directors.forEach(director => {
+            console.log(director.name);
+            console.log(director.id);
+                directorSelect.add(new Option(director.name, director.id))
             });
         }
 
         async function saveClub() {
-            console.log(getSelectValues(document.getElementById("club-role-dropdown")));
+            console.log(getSelectValues(document.getElementById("club-director-dropdown")));
             const nameInput = document.getElementById("club-name-input")
-            const surnameInput = document.getElementById("club-surname-input")
-            const mobileNumberInput = document.getElementById("club-mobileNumber-input")
-            const emailInput = document.getElementById("club-email-input")
-            const loginInput = document.getElementById("club-login-input")
-            const passwordInput = document.getElementById("club-password-input")
-            const roleDropdown = document.getElementById("club-role-dropdown")
-            const club = { name: nameInput.value, surname: surnameInput.value,
-                            mobileNumber: mobileNumberInput.value, email: emailInput.value,
-                            login: loginInput.value, password: passwordInput.value,
-                            roleId: roleDropdown.value}
+            const cityInput = document.getElementById("club-city-input")
+            const directorDropdown = document.getElementById("club-director-dropdown")
+            const club = { name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value}
             const response = await fetch("/api/clubs", {
                 method: 'POST',
                 headers: {
@@ -79,29 +74,12 @@
         <input id="club-name-input" name="title" type="text"/>
     </div>
     <div class="row">
-        <label for="club-surname-input">Surname:</label>
-        <input id="club-surname-input" name="title" type="text"/>
+        <label for="club-city-input">City:</label>
+        <input id="club-city-input" name="title" type="text"/>
     </div>
     <div class="row">
-        <label for="club-mobileNumber-input">mobileNumber:</label>
-        <input id="club-mobileNumber-input" name="title" type="text"/>
-    </div>
-    <div class="row">
-        <label for="club-email-input">email:</label>
-        <input id="club-email-input" name="title" type="text"/>
-    </div>
-    <div class="row">
-        <label for="club-login-input">login:</label>
-        <input id="club-login-input" name="title" type="text"/>
-    </div>
-    <div class="row">
-        <label for="club-password-input">password:</label>
-        <input id="club-password-input" name="title" type="text"/>
-    </div>
-
-    <div class="row">
-        <label for="club-role-dropdown">Role:</label>
-        <select id="club-role-dropdown" name="roleId">
+        <label for="club-director-dropdown">Director:</label>
+        <select id="club-director-dropdown" name="directorId">
         </select>
     </div>
 

@@ -8,6 +8,7 @@ public interface UserService {
     UserDto findById(long id);
 
     List<UserDto> findAll();
+    List<UserDto> findAllByRole(long id);
 
     void deleteById(long id);
 

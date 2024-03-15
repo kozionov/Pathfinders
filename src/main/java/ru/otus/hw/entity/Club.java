@@ -1,7 +1,9 @@
 package ru.otus.hw.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "clubs")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Club {
 
     @Id
@@ -48,4 +52,5 @@ public class Club {
             inverseJoinColumns = @JoinColumn( name="log_id")
     )
     private List<Log> log;
+
 }

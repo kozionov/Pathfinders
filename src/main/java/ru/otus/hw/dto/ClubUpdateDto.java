@@ -22,11 +22,11 @@ public class ClubUpdateDto {
 
     private String city;
 
-    private User director;
+    private Long directorId;
 
-    private List<User> members;
+    private List<Long> membersId;
 
-    private List<Score> scores;
+    private List<Long> scoresId;
 
-    private List<Log> log;
+    private List<Long> logsId;
 }

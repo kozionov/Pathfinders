@@ -45,6 +45,15 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(b -> modelMapper.map(b, UserDto.class)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserDto> findAllByRole(long roleId) {
+        var role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new EntityNotFoundException("Role with id %d not found".formatted(roleId)));
+        List<User> users = userRepository.findAllByRole(role);
+        return users.stream().map(b -> modelMapper.map(b, UserDto.class)).collect(Collectors.toList());
+    }
+
     @Transactional
     @Override
     public void deleteById(long id) {

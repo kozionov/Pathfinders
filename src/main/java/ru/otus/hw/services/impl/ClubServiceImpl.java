@@ -2,18 +2,23 @@ package ru.otus.hw.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.ClubCreateDto;
 import ru.otus.hw.dto.ClubDto;
 import ru.otus.hw.dto.ClubUpdateDto;
 import ru.otus.hw.entity.Club;
+import ru.otus.hw.entity.Log;
+import ru.otus.hw.entity.Score;
 import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.ClubRepository;
+import ru.otus.hw.repositories.LogRepository;
+import ru.otus.hw.repositories.UserRepository;
 import ru.otus.hw.services.ClubService;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 public class ClubServiceImpl implements ClubService {
 
     private final ClubRepository clubRepository;
+    private final UserRepository userRepository;
+    private final LogRepository logRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -33,14 +40,14 @@ public class ClubServiceImpl implements ClubService {
             throw new EntityNotFoundException("Club with id %d not found".formatted(id));
         }
         return modelMapper.map(club.get(), ClubDto.class);
-    }    
-    
+    }
+
     @Transactional(readOnly = true)
     @Override
     public ClubDto findByDirector(User director) {
         Optional<Club> club = clubRepository.findByDirector(director);
         if (club.isEmpty()) {
-            throw new EntityNotFoundException("Club with id %d not found".formatted(director.getLogin()));
+            throw new EntityNotFoundException("Club with id %d not found".formatted(director.getId()));
         }
         return modelMapper.map(club.get(), ClubDto.class);
     }
@@ -61,21 +68,28 @@ public class ClubServiceImpl implements ClubService {
     @Transactional
     @Override
     public ClubDto insert(ClubCreateDto clubCreateDto) {
-        var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), clubCreateDto.getDirector());
+        Optional<User> director = userRepository.findById(clubCreateDto.getDirectorId());
+        if (director.isEmpty()) {
+            throw new EntityNotFoundException("Director with ids %s not found".formatted(clubCreateDto.getDirectorId()));
+        }
+        Log log = logRepository.save(new Log(0L, LocalDate.of(2024, 9, 1), LocalDate.of(2025, 6, 30), new ArrayList<>()));
+        var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), director.get(), new ArrayList<>(), new ArrayList<>(), List.of(log));
         return modelMapper.map(club, ClubDto.class);
     }
 
     @Transactional
     @Override
     public ClubDto update(ClubUpdateDto clubUpdateDto) {
-        var club = save(clubUpdateDto.id(), clubUpdateDto.name(), clubUpdateDto.surname(), clubUpdateDto.mobileNumber(), clubUpdateDto.email(), clubUpdateDto.login(), clubUpdateDto.password(), clubUpdateDto.roleId());
+        Optional<User> director = userRepository.findById(clubUpdateDto.getDirectorId());
+        if (director.isEmpty()) {
+            throw new EntityNotFoundException("Director with ids %s not found".formatted(clubUpdateDto.getDirectorId()));
+        }
+        var club = save(clubUpdateDto.getId(), clubUpdateDto.getName(), clubUpdateDto.getCity(), director.get(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         return modelMapper.map(club, ClubDto.class);
     }
 
-    private ClubDto save(Long id, String name, String surname, String mobileNumber, String email, String login, String password, long roleId) {
-        var role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
-        var club = new Club(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role);
+    private ClubDto save(Long id, String name, String city, User director, List<User> members, List<Score> scores, List<Log> logs) {
+        var club = new Club(id, name, city, director, members, scores, logs);
         club = clubRepository.save(club);
         return modelMapper.map(club, ClubDto.class);
     }

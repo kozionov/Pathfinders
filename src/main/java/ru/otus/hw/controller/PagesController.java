@@ -26,6 +26,11 @@ public class PagesController {
         return "createUser";
     }
 
+    @GetMapping("/club/create")
+    public String clubCreatePage() {
+        return "createClub";
+    }
+
     @GetMapping("/book/edit")
     public String bookEditPage() {
         return "edit";
