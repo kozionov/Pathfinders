@@ -23,6 +23,11 @@
             width: 50px;
         }
     </style>
+    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
     <script>
         window.onload = async () => {
             const scores = await fetchAllScores();
@@ -43,16 +48,55 @@
                 detailsLink.href = "/user?id=" + user.id;
                 cell2.appendChild(detailsLink);
 
-                const cell3 = row.insertCell(2);
-                const editLink = document.createElement('a');
-                editLink.innerHTML = "Edit";
-                editLink.href = "/user/edit?id=" + user.id;
-                cell3.appendChild('editLink');
 
+                const cell3 = row.insertCell(2);
+                const scoresBox = document.createElement('div');
+                scores.forEach(score => {
+                    var newCheckBox = document.createElement('input');
+                    newCheckBox.type = 'checkbox';
+                    newCheckBox.id = user.id +'/'+ score.id;
+                    newCheckBox.value = score.val;
+                    scoresBox.appendChild(newCheckBox);
+                });
+
+                cell3.appendChild(scoresBox);
             });
         }
 
+        async function saveLogRecord() {
+             $('table tr').each(function(row){
+                $(this).find('td').each(function(cell){
+                    console.log('Строка ' + row + ', ячейка ' + cell + ', значение: ' + $(this).html());
+                    if(cell===0){
 
+                    } else if(cell===2){
+                            $(this).children().first().children().each(function(checkbox){
+                                if($(this).is(":checked")){
+                                    console.log('checked ' + $(this).attr('value'));
+<!--                                    var test = $(this).id.split("/")-->
+<!--                                    var extension = test[test.length - 1];-->
+<!--                                    console.log(extension);-->
+                                }
+                            });
+                    }
+                });
+            });
+            const nameInput = document.getElementById("club-name-input")
+            const cityInput = document.getElementById("club-city-input")
+            const directorDropdown = document.getElementById("club-director-dropdown")
+            const club = { name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value}
+<!--            const response = await fetch("/api/clubs", {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                  'Accept': 'application/json',-->
+<!--                  'Content-Type': 'application/json'-->
+<!--                },-->
+<!--                body: JSON.stringify(club)});-->
+<!--            const status = await response.status-->
+<!--            if (status === 200) {-->
+<!--                window.location.replace("/")-->
+<!--            }-->
+        }
 
     </script>
 </head>
