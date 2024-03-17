@@ -19,14 +19,10 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/", "/registration").permitAll()
-                        .requestMatchers("/main", "/edit", "/delete").authenticated()
+                        .requestMatchers("/","/admin","/director","/club","/user").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(Customizer.withDefaults())
-//                .formLogin((login)->login
-//                        .loginPage("/login")
-//                        .permitAll())
                 .logout(Customizer.withDefaults())
                 .anonymous(Customizer.withDefaults())
                 .rememberMe(Customizer.withDefaults());

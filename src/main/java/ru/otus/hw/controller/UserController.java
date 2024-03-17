@@ -11,6 +11,7 @@ import ru.otus.hw.security.UserPrincipal;
 import ru.otus.hw.services.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +50,7 @@ public class UserController {
         if (principal.getRole().equals("ADMIN")) {
             return userService.findAll();
         } else {
-            return userService.findAllByRole(2L);
+            return userService.findAllByRole(2L).stream().filter(d->d.getLogin().equals(principal.getUsername())).collect(Collectors.toList());
         }
     }
 }

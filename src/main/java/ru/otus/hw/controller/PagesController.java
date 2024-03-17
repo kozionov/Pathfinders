@@ -1,15 +1,23 @@
 package ru.otus.hw.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.otus.hw.security.UserPrincipal;
 
 @Controller
 public class PagesController {
 
-    @GetMapping({"/", "/books"})
-    public String booksPage() {
-        return "main";
+    @GetMapping({"/"})
+    public String mainPage() {
+        UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.getRole().equals("ADMIN")) {
+            return "admin/main";
+        } else {
+            return "director/main";
+        }
     }
+
 
     @GetMapping("/book")
     public String bookDetailsPage() {
@@ -25,6 +33,7 @@ public class PagesController {
     public String userCreatePage() {
         return "createUser";
     }
+
     @GetMapping("/user/edit")
     public String userEditPage() {
         return "editUser";
