@@ -32,3 +32,8 @@ async function fetchAllDirectors() {
   const directors = await directorsResponse.json();
   return directors;
 }
+async function fetchAllScores() {
+  const scoresResponse = await fetch("/api/scores");
+  const scores = await scoresResponse.json();
+  return scores;
+}

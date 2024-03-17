@@ -25,6 +25,8 @@
     </style>
     <script>
         window.onload = async () => {
+            const scores = await fetchAllScores();
+
             const usersTableBody = document.getElementById("usersTableBody")
 
             const response = await fetch("/api/users");
@@ -45,29 +47,12 @@
                 const editLink = document.createElement('a');
                 editLink.innerHTML = "Edit";
                 editLink.href = "/user/edit?id=" + user.id;
-                cell3.appendChild(editLink);
+                cell3.appendChild('editLink');
 
-                const cell4 = row.insertCell(3);
-                const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = "Delete";
-                deleteButton.id = "deleteButton" + user.id;
-                deleteButton.onclick = deleteUser;
-                cell4.appendChild(deleteButton);
             });
         }
 
-        async function deleteUser(pointerEvent) {
-            const userId = pointerEvent.currentTarget.id
-                .replace("deleteButton", "")
-            const response = await fetch("/api/users/" + userId, {
-                method: "DELETE"
-            });
-            const result = await response;
-            if (result.status === 200) {
-                const row = document.getElementById("userRow" + userId);
-                row.remove();
-            }
-        }
+
 
     </script>
 </head>
@@ -80,19 +65,22 @@
 <table class="users">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>id</th>
+        <th>Имя</th>
+        <th>Отметки</th>
     </tr>
     </thead>
     <tbody id="usersTableBody">
 
     </tbody>
 </table>
+
 <br/>
-<a th:href="@{/user/create}" type="button"><button>Добавить следопыта</button></a>
-<a th:href="@{/club/create}" type="button"><button>Создать клуб</button></a>
-<a th:href="@{/logRecord/create}" type="button"><button>Провести занятие</button></a>
+<div class="row">
+    <button type="button" onclick="saveLogRecord()">Сохранить</button>
+    <a th:href="@{/}">
+        <button type="button">Cancel</button>
+    </a>
+</div>
 </body>
 </html>
