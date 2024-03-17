@@ -48,7 +48,7 @@ public class UserController {
     public List<UserDto> getAllDirectors() {
         UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal.getRole().equals("ADMIN")) {
-            return userService.findAll();
+            return userService.findAllByRole(2L);
         } else {
             return userService.findAllByRole(2L).stream().filter(d->d.getLogin().equals(principal.getUsername())).collect(Collectors.toList());
         }
