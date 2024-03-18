@@ -64,38 +64,52 @@
         }
 
         async function saveLogRecord() {
+                var log = {
+                    classDate: new Date(),
+                    records: []
+                };
              $('table tr').each(function(row){
+                let userId;
+                let scoreSum = 0;
                 $(this).find('td').each(function(cell){
                     console.log('Строка ' + row + ', ячейка ' + cell + ', значение: ' + $(this).html());
                     if(cell===0){
-
+                        console.log('userId = '+  $(this).html());
+                        userId = $(this).html();
                     } else if(cell===2){
                             $(this).children().first().children().each(function(checkbox){
                                 if($(this).is(":checked")){
                                     console.log('checked ' + $(this).attr('value'));
-<!--                                    var test = $(this).id.split("/")-->
-<!--                                    var extension = test[test.length - 1];-->
-<!--                                    console.log(extension);-->
+                                    scoreSum = scoreSum + parseInt($(this).attr('value'));
                                 }
                             });
+
+                            console.log('sum = ' + scoreSum + ' userId = ' + userId);
+                            const record = { userId: userId,  scoreSum: scoreSum};
+                            console.log('record = ' + JSON.stringify(record));
+                            log.records.push({
+                                "userId" : userId,
+                                "scoreSum"   : scoreSum
+                            });
+                            console.log('log = ' + log);
+                            console.log('log = ' + JSON.stringify(log));
                     }
                 });
             });
-            const nameInput = document.getElementById("club-name-input")
-            const cityInput = document.getElementById("club-city-input")
-            const directorDropdown = document.getElementById("club-director-dropdown")
-            const club = { name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value}
-<!--            const response = await fetch("/api/clubs", {-->
-<!--                method: 'POST',-->
-<!--                headers: {-->
-<!--                  'Accept': 'application/json',-->
-<!--                  'Content-Type': 'application/json'-->
-<!--                },-->
-<!--                body: JSON.stringify(club)});-->
-<!--            const status = await response.status-->
-<!--            if (status === 200) {-->
-<!--                window.location.replace("/")-->
-<!--            }-->
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const userIdParam = urlParams.get('id');
+            const response = await fetch("/api/logs/"+userIdParam, {
+                method: 'PUT',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(log)});
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
         }
 
     </script>
