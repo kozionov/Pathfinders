@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8"/>
     <title>Журнал</title>
@@ -72,6 +74,25 @@
     </script>
 </head>
 <body>
+
+<h2>Welcome</h2>
+<p>Spring Security Thymeleaf tutorial</p>
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="isAuthenticated()">
+    Text visible only to authenticated users.
+</div>
+Authenticated username:
+<div sec:authentication="name"></div>
+Authenticated user roles:
+<div sec:authentication="principal.authorities"></div>
+
+<div sec:authorize="isAuthenticated()">
+    <p>Logged user: <span sec:authentication="name"> </span></p>
+    <p>Roles: <span sec:authentication="principal.authorities"> </span></p>
+</div>
+
+
 <a href="#" th:href="@{/logout}">Log Out</a>
 <h3>Клуб:</h3>
 
