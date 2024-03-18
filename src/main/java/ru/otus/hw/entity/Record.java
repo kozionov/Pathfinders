@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -21,7 +20,8 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     private LocalDate classDate;
@@ -29,6 +29,6 @@ public class Record {
     private Integer scoreSum;
 
     @ManyToOne
-    @JoinColumn(name="log_id", nullable=false)
+    @JoinColumn(name = "log_id", referencedColumnName = "id", nullable = false)
     private Log log;
 }

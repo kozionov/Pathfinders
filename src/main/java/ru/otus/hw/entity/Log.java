@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,14 +19,14 @@ import java.util.List;
 public class Log {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private LocalDate dateFrom;
 
     private LocalDate dateTo;
 
-    @OneToMany(mappedBy="log", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "log", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
 

@@ -64,8 +64,10 @@
         }
 
         async function saveLogRecord() {
+                var date = new Date($('#date-input').val());
+                console.log(date);
                 var log = {
-                    classDate: new Date(),
+                    classDate: date,
                     records: []
                 };
              $('table tr').each(function(row){
@@ -119,6 +121,8 @@
 <h3>Клуб:</h3>
 
 <h3>Users:</h3>
+
+<input type="date" id="date-input">
 
 <table class="users">
     <thead>

@@ -8,6 +8,7 @@ import ru.otus.hw.dto.LogCreateDto;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.LogRepository;
+import ru.otus.hw.repositories.RecordRepository;
 import ru.otus.hw.repositories.UserRepository;
 import ru.otus.hw.services.LogService;
 import ru.otus.hw.entity.Record;
@@ -22,6 +23,7 @@ public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
     private final UserRepository userRepository;
+    private final RecordRepository recordRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -36,9 +38,8 @@ public class LogServiceImpl implements LogService {
                 .stream()
                 .map(x -> new Record(0L, userRepository.findById(x.userId()).get(), clubDto.classDate(), x.scoreSum(), log))
                 .collect(Collectors.toList());
-        log.setRecords(records);
-        var save = logRepository.save(log);
-        return save;
+        List<Record> collect = records.stream().map(x -> recordRepository.save(x)).collect(Collectors.toList());
+        return log;
     }
 
     @Transactional(readOnly = true)
