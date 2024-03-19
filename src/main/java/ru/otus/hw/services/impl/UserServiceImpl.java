@@ -5,11 +5,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw.dto.BookDto;
 import ru.otus.hw.dto.UserCreateDto;
 import ru.otus.hw.dto.UserDto;
 import ru.otus.hw.dto.UserUpdateDto;
-import ru.otus.hw.entity.Role;
+import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.LogRepository;
@@ -81,6 +80,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
         var user = new User(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role);
         user = userRepository.save(user);
+        Log log = logRepository.findById(1).orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
+        log.getMembers().add(user);
+        logRepository.save(log);
         return modelMapper.map(user, UserDto.class);
     }
 
