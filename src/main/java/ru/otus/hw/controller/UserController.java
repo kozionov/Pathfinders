@@ -23,6 +23,10 @@ public class UserController {
     public List<UserDto> getAllUsers() {
         return userService.findAll();
     }
+    @GetMapping("/api/users/log/{id}")
+    public List<UserDto> getAllUsersByLogId(@PathVariable("id") long id) {
+        return userService.findAllByLogId(id);
+    }
 
     @GetMapping("/api/users/{id}")
     public UserDto getUser(@PathVariable("id") long id) {
@@ -50,7 +54,7 @@ public class UserController {
         if (principal.getRole().equals("ADMIN")) {
             return userService.findAllByRole(2L);
         } else {
-            return userService.findAllByRole(2L).stream().filter(d->d.getLogin().equals(principal.getUsername())).collect(Collectors.toList());
+            return userService.findAllByRole(2L).stream().filter(d -> d.getLogin().equals(principal.getUsername())).collect(Collectors.toList());
         }
     }
 }

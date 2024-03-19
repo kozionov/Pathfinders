@@ -12,6 +12,7 @@ import ru.otus.hw.dto.UserUpdateDto;
 import ru.otus.hw.entity.Role;
 import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.repositories.LogRepository;
 import ru.otus.hw.repositories.RoleRepository;
 import ru.otus.hw.repositories.UserRepository;
 import ru.otus.hw.services.UserService;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final LogRepository logRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -86,5 +88,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public long count() {
         return userRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserDto> findAllByLogId(long id) {
+        var log = logRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(id)));
+        return log.getMembers().stream().map(b -> modelMapper.map(b, UserDto.class)).collect(Collectors.toList());
     }
 }

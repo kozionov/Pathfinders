@@ -19,8 +19,8 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/","/admin","/director","/club","/user").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/", "/admin", "/director", "/club", "/user").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())

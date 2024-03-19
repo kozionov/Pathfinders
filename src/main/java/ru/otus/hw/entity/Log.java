@@ -26,6 +26,14 @@ public class Log {
 
     private LocalDate dateTo;
 
+    @OneToMany
+    @JoinTable(
+            name="log_user_link",
+            joinColumns = @JoinColumn( name="log_id"),
+            inverseJoinColumns = @JoinColumn( name="user_id")
+    )
+    private List<User> members;
+
     @OneToMany(mappedBy = "log", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 

@@ -1,6 +1,5 @@
 package ru.otus.hw.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 public record UserCreateDto(@NotNull String name,
@@ -9,6 +8,7 @@ public record UserCreateDto(@NotNull String name,
                             String email,
                             @NotNull String login,
                             @NotNull String password,
-                            @NotNull long roleId) {
+                            @NotNull long roleId,
+                            long logId) {
 
 }

@@ -25,13 +25,51 @@
             width: 50px;
         }
     </style>
+    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
     <script>
         window.onload = async () => {
+
+            console.log($('#pid').html())
+            const club = await fetchClubByUserId($('#pid').html());
+            console.log("test" + club.id)
+             const clubInfo = document.getElementById("clubInfo")
+             const clubP = document.createElement('p');
+             clubP.innerHTML = club.name + " " + club.city;
+             clubInfo.appendChild(clubP);
+
+
+             const records = await fetchRecordsByLogId(1);
+
+             const usersL = await fetchUsersByLogId(1);
+
             const usersTableBody = document.getElementById("usersTableBody")
 
-            const response = await fetch("/api/users");
-            const users = await response.json();
-            users.forEach(user => {
+<!--            const response = await fetch("/api/users");-->
+<!--            const users = await response.json();-->
+
+var tr = document.getElementById('table').tHead.children[0]
+
+
+
+var i = 0;
+
+            usersL.forEach(user => {
+                    if(i==0){
+                        records.forEach(rec => {
+                            if(rec.userId==user.id){
+                                console.log("+++ " + rec.classDate);
+                               var th = document.createElement('th');
+                                th.innerHTML = rec.classDate;
+                                tr.appendChild(th);
+                            }
+                        });
+                    i=i+1;
+                    }
+
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
 
@@ -55,6 +93,22 @@
                 deleteButton.id = "deleteButton" + user.id;
                 deleteButton.onclick = deleteUser;
                 cell4.appendChild(deleteButton);
+
+                let scoresQ="";
+                let m = 4;
+                records.forEach(rec => {
+                    if(rec.userId==user.id){
+                        if (rec.scoreSum != null){
+<!--                        row.insertCell(m).innerHTML = scoresQ;-->
+                        row.insertCell(m).innerHTML = rec.scoreSum;
+                        m=m+1;
+<!--                            scoresQ = scoresQ + parseInt(rec.scoreSum) + " ";-->
+                        }
+                    }
+                });
+<!--                console.log("+++mm " + m);-->
+<!--                -->
+<!--                m=m+1;-->
             });
         }
 
@@ -89,16 +143,19 @@ Authenticated user roles:
 
 <div sec:authorize="isAuthenticated()">
     <p>Logged user: <span sec:authentication="name"> </span></p>
-    <p>Roles: <span sec:authentication="principal.authorities"> </span></p>
+    <p>Roles: <span sec:authentication="principal.username"> </span></p>
+    <p id="ppid">Roles: <span sec:authentication="principal.id" id="pid"> </span></p>
 </div>
 
 
 <a href="#" th:href="@{/logout}">Log Out</a>
 <h3>Клуб:</h3>
+<div id="clubInfo">
+</div>
 
 <h3>Users:</h3>
 
-<table class="users">
+<table class="users" id="table">
     <thead>
     <tr>
         <th>ID</th>
@@ -112,8 +169,14 @@ Authenticated user roles:
     </tbody>
 </table>
 <br/>
-<a th:href="@{/user/create}" type="button"><button>Добавить следопыта</button></a>
-<a th:href="@{/club/create}" type="button"><button>Создать клуб</button></a>
-<a th:href="@{/logRecord/create?id=1}" type="button"><button>Провести занятие</button></a>
+<a th:href="@{/user/create}" type="button">
+    <button>Добавить следопыта</button>
+</a>
+<a th:href="@{/club/create}" type="button">
+    <button>Создать клуб</button>
+</a>
+<a th:href="@{/logRecord/create?id=1}" type="button">
+    <button>Провести занятие</button>
+</a>
 </body>
 </html>

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw.dto.ClubCreateDto;
-import ru.otus.hw.dto.ClubDto;
-import ru.otus.hw.dto.ClubUpdateDto;
+import ru.otus.hw.dto.*;
 import ru.otus.hw.entity.Club;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.Score;
@@ -72,8 +70,9 @@ public class ClubServiceImpl implements ClubService {
         if (director.isEmpty()) {
             throw new EntityNotFoundException("Director with ids %s not found".formatted(clubCreateDto.getDirectorId()));
         }
-        Log log = logRepository.save(new Log(0L, LocalDate.of(2024, 9, 1), LocalDate.of(2025, 6, 30), new ArrayList<>()));
-        var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), director.get(), new ArrayList<>(), new ArrayList<>(), List.of(log));
+        Optional<User> byId = userRepository.findById(1L);
+        Log log = logRepository.save(new Log(0L, LocalDate.of(2024, 9, 1), LocalDate.of(2025, 6, 30), List.of(byId.get()), new ArrayList<>()));
+        var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), director.get(), new ArrayList<>(), List.of(log));
         return modelMapper.map(club, ClubDto.class);
     }
 
@@ -84,12 +83,12 @@ public class ClubServiceImpl implements ClubService {
         if (director.isEmpty()) {
             throw new EntityNotFoundException("Director with ids %s not found".formatted(clubUpdateDto.getDirectorId()));
         }
-        var club = save(clubUpdateDto.getId(), clubUpdateDto.getName(), clubUpdateDto.getCity(), director.get(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        var club = save(clubUpdateDto.getId(), clubUpdateDto.getName(), clubUpdateDto.getCity(), director.get(), new ArrayList<>(), new ArrayList<>());
         return modelMapper.map(club, ClubDto.class);
     }
 
-    private ClubDto save(Long id, String name, String city, User director, List<User> members, List<Score> scores, List<Log> logs) {
-        var club = new Club(id, name, city, director, members, scores, logs);
+    private ClubDto save(Long id, String name, String city, User director, List<Score> scores, List<Log> logs) {
+        var club = new Club(id, name, city, director, scores, logs);
         club = clubRepository.save(club);
         return modelMapper.map(club, ClubDto.class);
     }
@@ -98,5 +97,16 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public long count() {
         return clubRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ClubMainDto findByUserId(long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("нет пользователя с id"));
+        Optional<Club> byDirector = clubRepository.findByDirector(user);
+        if (byDirector.isEmpty()) {
+            return new ClubMainDto();
+        }
+        return modelMapper.map(byDirector.get(), ClubMainDto.class);
     }
 }

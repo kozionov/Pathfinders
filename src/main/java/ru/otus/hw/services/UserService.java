@@ -17,4 +17,7 @@ public interface UserService {
     UserDto update(UserUpdateDto userUpdateDto);
 
     long count();
+
+    List<UserDto> findAllByLogId(long id);
+
 }

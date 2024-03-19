@@ -31,14 +31,6 @@ public class Club {
 
     @OneToMany
     @JoinTable(
-            name="club_user_link",
-            joinColumns = @JoinColumn( name="club_id"),
-            inverseJoinColumns = @JoinColumn( name="user_id")
-    )
-    private List<User> members;
-
-    @OneToMany
-    @JoinTable(
             name="club_score_link",
             joinColumns = @JoinColumn( name="club_id"),
             inverseJoinColumns = @JoinColumn( name="score_id")

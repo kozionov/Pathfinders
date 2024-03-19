@@ -19,4 +19,7 @@ public interface ClubService {
     ClubDto update(ClubUpdateDto clubDto);
 
     long count();
+
+    ClubMainDto findByUserId(long id);
+
 }
