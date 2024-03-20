@@ -28,9 +28,9 @@ public class Log {
 
     @OneToMany
     @JoinTable(
-            name="log_user_link",
-            joinColumns = @JoinColumn( name="log_id"),
-            inverseJoinColumns = @JoinColumn( name="user_id")
+            name = "log_user_link",
+            joinColumns = @JoinColumn(name = "log_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> members;
 

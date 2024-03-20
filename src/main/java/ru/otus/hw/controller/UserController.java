@@ -23,6 +23,7 @@ public class UserController {
     public List<UserDto> getAllUsers() {
         return userService.findAll();
     }
+
     @GetMapping("/api/users/log/{id}")
     public List<UserDto> getAllUsersByLogId(@PathVariable("id") long id) {
         return userService.findAllByLogId(id);

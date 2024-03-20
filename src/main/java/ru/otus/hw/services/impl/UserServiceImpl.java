@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserDto.class);
     }
 
-    private void addUserToLog(User user){
+    private void addUserToLog(User user) {
         UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal.getRole().equals("DIRECTOR")) {
             User dir = userRepository.findById(principal.getId()).orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private boolean testDate(LocalDate from, LocalDate to){
+    private boolean testDate(LocalDate from, LocalDate to) {
         return LocalDate.now().isAfter(from) && LocalDate.now().isBefore(to);
     }
 

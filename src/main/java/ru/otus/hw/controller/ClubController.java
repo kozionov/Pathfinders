@@ -26,6 +26,7 @@ public class ClubController {
     public ClubDto getClub(@PathVariable("id") long id) {
         return clubService.findById(id);
     }
+
     @GetMapping("/api/clubs/user/{id}")
     public ClubMainDto getClubByUserId(@PathVariable("id") long id) {
         return clubService.findByUserId(id);

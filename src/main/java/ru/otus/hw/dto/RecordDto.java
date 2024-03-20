@@ -8,7 +8,8 @@ import ru.otus.hw.entity.User;
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class RecordDto {
     private LocalDate classDate;
     private Long userId;

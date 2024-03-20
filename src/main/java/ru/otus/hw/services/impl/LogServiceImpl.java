@@ -62,7 +62,7 @@ public class LogServiceImpl implements LogService {
                 .map(x -> modelMapper.map(x, LogDto.class)).toList();
     }
 
-    private boolean testDate(LocalDate from, LocalDate to){
+    private boolean testDate(LocalDate from, LocalDate to) {
         return LocalDate.now().isAfter(from) && LocalDate.now().isBefore(to);
     }
 }

@@ -48,6 +48,7 @@ public class PagesController {
     public String clubEditPage() {
         return "editClub";
     }
+
     @GetMapping("/logRecord/create")
     public String logRecordCreate() {
         return "director/logRecordCreate";

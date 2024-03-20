@@ -31,17 +31,17 @@ public class Club {
 
     @OneToMany
     @JoinTable(
-            name="club_score_link",
-            joinColumns = @JoinColumn( name="club_id"),
-            inverseJoinColumns = @JoinColumn( name="score_id")
+            name = "club_score_link",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "score_id")
     )
     private List<Score> scores;
 
     @OneToMany
     @JoinTable(
-            name="club_log_link",
-            joinColumns = @JoinColumn( name="club_id"),
-            inverseJoinColumns = @JoinColumn( name="log_id")
+            name = "club_log_link",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "log_id")
     )
     private List<Log> log;
 
