@@ -32,15 +32,33 @@
             crossorigin="anonymous"></script>
     <script>
         var logId;
+        var club;
         window.onload = async () => {
 
+
             console.log($('#pid').html())
-            const club = await fetchClubByUserId($('#pid').html());
+            club = await fetchClubByUserId($('#pid').html());
             console.log("test" + club.id)
              const clubInfo = document.getElementById("clubInfo")
              const clubP = document.createElement('p');
-             clubP.innerHTML = club.name + " " + club.city;
+             if(club.id!=null){
+                clubP.innerHTML = club.name + " " + club.city;
+             }
              clubInfo.appendChild(clubP);
+
+             if(club.id==null){
+                $('#addPathfinder').css("visibility", "hidden");
+                $('#addRecords').css("visibility", "hidden");
+             } else{
+                $('#addPathfinder').css("visibility", "visible");
+                $('#addRecords').css("visibility", "visible");
+             }
+
+             if(club.id!=null){
+                $('#addClub').css("visibility", "hidden");
+             } else{
+                $('#addClub').css("visibility", "visible");
+             }
 
 
             const logs = await fetchLogsByClubId(club.id);
@@ -150,7 +168,12 @@ var i = 0;
 <h3>Клуб:</h3>
 <div id="clubInfo">
 </div>
-
+<a th:href="@{/club/create}" type="button" id="addClub">
+    <button>Создать клуб</button>
+</a> <br/>
+<a th:href="@{/user/create}" type="button" id="addPathfinder">
+    <button>Добавить следопыта</button>
+</a>
 <h3>Users:</h3>
 
 <table class="users" id="table">
@@ -167,14 +190,8 @@ var i = 0;
     </tbody>
 </table>
 <br/>
-<a th:href="@{/user/create}" type="button">
-    <button>Добавить следопыта</button>
-</a>
-<a th:href="@{/club/create}" type="button">
-    <button>Создать клуб</button>
-</a>
 
-<a type="button" onclick="redirectToLogRecordCreate();">
+<a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
     <button>Провести занятие</button>
 </a>
 </body>
