@@ -29,13 +29,16 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
     <script>
+        var logId;
         window.onload = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            logId = urlParams.get('id');
+
             const scores = await fetchAllScores();
 
             const usersTableBody = document.getElementById("usersTableBody")
 
-            const response = await fetch("/api/users");
-            const users = await response.json();
+            const users = await fetchUsersByLogId(logId);
             users.forEach(user => {
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
@@ -99,9 +102,8 @@
                 });
             });
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const userIdParam = urlParams.get('id');
-            const response = await fetch("/api/logs/"+userIdParam, {
+
+            const response = await fetch("/api/logs/"+logId, {
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',

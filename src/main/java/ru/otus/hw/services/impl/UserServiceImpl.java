@@ -2,20 +2,25 @@ package ru.otus.hw.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.UserCreateDto;
 import ru.otus.hw.dto.UserDto;
 import ru.otus.hw.dto.UserUpdateDto;
+import ru.otus.hw.entity.Club;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.repositories.ClubRepository;
 import ru.otus.hw.repositories.LogRepository;
 import ru.otus.hw.repositories.RoleRepository;
 import ru.otus.hw.repositories.UserRepository;
+import ru.otus.hw.security.UserPrincipal;
 import ru.otus.hw.services.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final LogRepository logRepository;
+    private final ClubRepository clubRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -80,10 +86,23 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
         var user = new User(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role);
         user = userRepository.save(user);
-        Log log = logRepository.findById(1).orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
-        log.getMembers().add(user);
-        logRepository.save(log);
+        addUserToLog(user);
         return modelMapper.map(user, UserDto.class);
+    }
+
+    private void addUserToLog(User user){
+        UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.getRole().equals("DIRECTOR")) {
+            User dir = userRepository.findById(principal.getId()).orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
+            Club club = clubRepository.findByDirector(dir).orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
+            Log log = club.getLog().stream().filter(l -> testDate(l.getDateFrom(), l.getDateTo())).findFirst().orElseThrow();
+            log.getMembers().add(user);
+            logRepository.save(log);
+        }
+    }
+
+    private boolean testDate(LocalDate from, LocalDate to){
+        return LocalDate.now().isAfter(from) && LocalDate.now().isBefore(to);
     }
 
     @Transactional(readOnly = true)

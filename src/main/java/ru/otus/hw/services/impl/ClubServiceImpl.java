@@ -73,7 +73,7 @@ public class ClubServiceImpl implements ClubService {
         if (director.isEmpty()) {
             throw new EntityNotFoundException("Director with ids %s not found".formatted(clubCreateDto.getDirectorId()));
         }
-        Log log = logRepository.save(new Log(0L, LocalDate.of(2024, 9, 1), LocalDate.of(2025, 6, 30), new ArrayList<>(), new ArrayList<>()));
+        Log log = logRepository.save(new Log(0L, LocalDate.of(2023, 9, 1), LocalDate.of(2024, 6, 30), new ArrayList<>(), new ArrayList<>()));
         var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), director.get(), new ArrayList<>(), List.of(log));
         return modelMapper.map(club, ClubDto.class);
     }

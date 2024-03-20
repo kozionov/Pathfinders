@@ -31,6 +31,7 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
     <script>
+        var logId;
         window.onload = async () => {
 
             console.log($('#pid').html())
@@ -42,18 +43,16 @@
              clubInfo.appendChild(clubP);
 
 
-             const records = await fetchRecordsByLogId(1);
+            const logs = await fetchLogsByClubId(club.id);
+            logId = logs[0].id;
+             const records = await fetchRecordsByLogId(logs[0].id);
 
-             const usersL = await fetchUsersByLogId(1);
+             const usersL = await fetchUsersByLogId(logs[0].id);
 
             const usersTableBody = document.getElementById("usersTableBody")
 
-<!--            const response = await fetch("/api/users");-->
-<!--            const users = await response.json();-->
 
 var tr = document.getElementById('table').tHead.children[0]
-
-
 
 var i = 0;
 
@@ -99,16 +98,12 @@ var i = 0;
                 records.forEach(rec => {
                     if(rec.userId==user.id){
                         if (rec.scoreSum != null){
-<!--                        row.insertCell(m).innerHTML = scoresQ;-->
                         row.insertCell(m).innerHTML = rec.scoreSum;
                         m=m+1;
-<!--                            scoresQ = scoresQ + parseInt(rec.scoreSum) + " ";-->
                         }
                     }
                 });
-<!--                console.log("+++mm " + m);-->
-<!--                -->
-<!--                m=m+1;-->
+
             });
         }
 
@@ -125,27 +120,30 @@ var i = 0;
             }
         }
 
+        function redirectToLogRecordCreate(){
+            window.location.href = "/logRecord/create?id=" + logId;
+        }
     </script>
 </head>
 <body>
 
 <h2>Welcome</h2>
-<p>Spring Security Thymeleaf tutorial</p>
-<div sec:authorize="hasRole('USER')">Text visible to user.</div>
-<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
-<div sec:authorize="isAuthenticated()">
-    Text visible only to authenticated users.
-</div>
-Authenticated username:
-<div sec:authentication="name"></div>
-Authenticated user roles:
-<div sec:authentication="principal.authorities"></div>
+<!--<p>Spring Security Thymeleaf tutorial</p>-->
+<!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>-->
+<!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    Text visible only to authenticated users.-->
+<!--</div>-->
+<!--Authenticated username:-->
+<!--<div sec:authentication="name"></div>-->
+<!--Authenticated user roles:-->
+<!--<div sec:authentication="principal.authorities" ></div>-->
 
-<div sec:authorize="isAuthenticated()">
-    <p>Logged user: <span sec:authentication="name"> </span></p>
-    <p>Roles: <span sec:authentication="principal.username"> </span></p>
-    <p id="ppid">Roles: <span sec:authentication="principal.id" id="pid"> </span></p>
-</div>
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    <p>Logged user: <span sec:authentication="name"> </span></p>-->
+<!--    <p>Roles: <span sec:authentication="principal.username"> </span></p>-->
+<div style="display: none;"><p id="ppid">Roles: <span sec:authentication="principal.id" id="pid"> </span></p></div>
+<!--</div>-->
 
 
 <a href="#" th:href="@{/logout}">Log Out</a>
@@ -175,7 +173,8 @@ Authenticated user roles:
 <a th:href="@{/club/create}" type="button">
     <button>Создать клуб</button>
 </a>
-<a th:href="@{/logRecord/create?id=1}" type="button">
+
+<a type="button" onclick="redirectToLogRecordCreate();">
     <button>Провести занятие</button>
 </a>
 </body>

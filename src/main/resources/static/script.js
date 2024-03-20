@@ -57,3 +57,9 @@ async function fetchUsersByLogId(id) {
   const users = await usersResponse.json();
   return users;
 }
+
+async function fetchLogsByClubId(id) {
+  const logsResponse = await fetch("/api/logs/" + id);
+  const logs = await logsResponse.json();
+  return logs;
+}
