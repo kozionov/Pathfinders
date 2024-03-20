@@ -98,21 +98,8 @@ var i = 0;
                 detailsLink.href = "/user?id=" + user.id;
                 cell2.appendChild(detailsLink);
 
-                const cell3 = row.insertCell(2);
-                const editLink = document.createElement('a');
-                editLink.innerHTML = "Edit";
-                editLink.href = "/user/edit?id=" + user.id;
-                cell3.appendChild(editLink);
-
-                const cell4 = row.insertCell(3);
-                const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = "Delete";
-                deleteButton.id = "deleteButton" + user.id;
-                deleteButton.onclick = deleteUser;
-                cell4.appendChild(deleteButton);
-
                 let scoresQ="";
-                let m = 4;
+                let m = 2;
                 records.forEach(rec => {
                     if(rec.userId==user.id){
                         if (rec.scoreSum != null){
@@ -181,8 +168,6 @@ var i = 0;
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Edit</th>
-        <th>Delete</th>
     </tr>
     </thead>
     <tbody id="usersTableBody">
