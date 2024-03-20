@@ -38,7 +38,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
 }
