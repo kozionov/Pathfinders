@@ -31,6 +31,13 @@
     <script>
         var logId;
         window.onload = async () => {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+            $('#date-input').val(today);
+
             const urlParams = new URLSearchParams(window.location.search);
             logId = urlParams.get('id');
 
@@ -120,7 +127,6 @@
 </head>
 <body>
 <a href="#" th:href="@{/logout}">Log Out</a>
-<h3>Клуб:</h3>
 
 <h3>Users:</h3>
 

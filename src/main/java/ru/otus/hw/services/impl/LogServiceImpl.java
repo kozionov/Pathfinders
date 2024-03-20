@@ -15,6 +15,7 @@ import ru.otus.hw.repositories.RecordRepository;
 import ru.otus.hw.repositories.UserRepository;
 import ru.otus.hw.services.LogService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,6 +55,14 @@ public class LogServiceImpl implements LogService {
     @Transactional(readOnly = true)
     @Override
     public List<LogDto> findByClubId(long id) {
-        return clubRepository.findById(id).orElseThrow().getLog().stream().map(x -> modelMapper.map(x, LogDto.class)).toList();
+        return clubRepository.findById(id).orElseThrow()
+                .getLog()
+                .stream()
+                .filter(l -> testDate(l.getDateFrom(), l.getDateTo()))
+                .map(x -> modelMapper.map(x, LogDto.class)).toList();
+    }
+
+    private boolean testDate(LocalDate from, LocalDate to){
+        return LocalDate.now().isAfter(from) && LocalDate.now().isBefore(to);
     }
 }
