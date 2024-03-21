@@ -5,26 +5,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Журнал</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
-        .users {
-            border: 1px solid steelblue;
-            width: 300px;
-            border-collapse: collapse;
-        }
-
-        .users tr td, th {
-            padding: 5px;
-            border: 1px solid steelblue;
-        }
-
-        .users td:last-child, td:first-child {
-            width: 50px;
-        }
-    </style>
     <script src="../static/script.js" th:src="@{/script.js}"></script>
     <script
             src="https://code.jquery.com/jquery-3.7.1.js"
@@ -157,7 +139,7 @@ var i = 0;
 
 <a href="#" th:href="@{/logout}">Log Out</a>
 <a href="#" th:href="@{https://yamolod.info/klub-sledopyt/}">О клубе</a>
-<img th:src="@{/pic/Pathfinder_world_logo.png}"/>
+<img th:src="@{/pic/Pathfinder_world_logo.png}" width="150px" height="100px"/>
 <h3>Клуб:</h3>
 <div id="clubInfo">
 </div>
@@ -185,5 +167,7 @@ var i = 0;
 <a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
     <button>Провести занятие</button>
 </a>
+
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>

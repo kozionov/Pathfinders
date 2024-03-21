@@ -1,0 +1,62 @@
+html, body{
+	margin: 0px;
+	padding: 0px;
+	}
+.body {
+	margin: 20px;
+	padding: 20px;
+}	
+h1 {
+	color: blue;
+}
+
+.error {
+	color: red;
+}
+
+.header{
+	margin: 20px;
+	padding: 20px;
+}
+
+a.header {
+	padding: 5px;
+}
+
+th, td{
+	padding: 5px;
+	text-align: left;
+}
+.header{
+	margin: 0px;
+	padding: 10px;
+	background-color: LightGrey;
+}
+
+.footer{
+    width: 100%;
+	margin: 0px;
+	background-color: LightGrey;
+	position:absolute;bottom:0;
+}
+
+.test {
+	background-color: blue;
+}
+
+
+
+        .users {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .users tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .users td:last-child, td:first-child {
+            width: 50px;
+        }
