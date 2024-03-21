@@ -37,7 +37,8 @@ th, td{
     width: 100%;
 	margin: 0px;
 	background-color: LightGrey;
-	position:absolute;bottom:0;
+	position: fixed;
+	bottom:0;
 }
 
 .test {
