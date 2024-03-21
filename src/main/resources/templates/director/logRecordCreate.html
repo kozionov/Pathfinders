@@ -30,6 +30,8 @@
             crossorigin="anonymous"></script>
     <script>
         var logId;
+        var users;
+        var scores;
         window.onload = async () => {
             var now = new Date();
             var day = ("0" + now.getDate()).slice(-2);
@@ -41,12 +43,25 @@
             const urlParams = new URLSearchParams(window.location.search);
             logId = urlParams.get('id');
 
-            const scores = await fetchAllScores();
+            scores = await fetchAllScores();
 
             const usersTableBody = document.getElementById("usersTableBody")
 
-            const users = await fetchUsersByLogId(logId);
+            users = await fetchUsersByLogId(logId);
+
+            var tr = document.getElementById('table').tHead.children[0]
+            var i = 0;
+
             users.forEach(user => {
+                    if(i==0){
+                        scores.forEach(score => {
+                                var th = document.createElement('th');
+                                th.innerHTML = score.name;
+                                tr.appendChild(th);
+
+                        });
+                    i=i+1;
+                    }
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
 
@@ -58,18 +73,22 @@
                 detailsLink.href = "/user?id=" + user.id;
                 cell2.appendChild(detailsLink);
 
-
-                const cell3 = row.insertCell(2);
-                const scoresBox = document.createElement('div');
+                let scoresQ="";
+                let m = 2;
                 scores.forEach(score => {
-                    var newCheckBox = document.createElement('input');
-                    newCheckBox.type = 'checkbox';
-                    newCheckBox.id = user.id +'/'+ score.id;
-                    newCheckBox.value = score.val;
-                    scoresBox.appendChild(newCheckBox);
+                        const cell3 = row.insertCell(m);
+                        const scoresBox = document.createElement('div');
+                        var newCheckBox = document.createElement('input');
+                        newCheckBox.type = 'checkbox';
+                        newCheckBox.id = user.id +'/'+ score.id;
+                        newCheckBox.className = "checkBox"
+                        newCheckBox.value = score.val;
+                        scoresBox.appendChild(newCheckBox);
+                        m=m+1
+                        cell3.appendChild(scoresBox);
+
                 });
 
-                cell3.appendChild(scoresBox);
             });
         }
 
@@ -80,35 +99,27 @@
                     classDate: date,
                     records: []
                 };
-             $('table tr').each(function(row){
+
                 let userId;
                 let scoreSum = 0;
-                $(this).find('td').each(function(cell){
-                    console.log('Строка ' + row + ', ячейка ' + cell + ', значение: ' + $(this).html());
-                    if(cell===0){
-                        console.log('userId = '+  $(this).html());
-                        userId = $(this).html();
-                    } else if(cell===2){
-                            $(this).children().first().children().each(function(checkbox){
-                                if($(this).is(":checked")){
-                                    console.log('checked ' + $(this).attr('value'));
-                                    scoreSum = scoreSum + parseInt($(this).attr('value'));
-                                }
-                            });
 
-                            console.log('sum = ' + scoreSum + ' userId = ' + userId);
-                            const record = { userId: userId,  scoreSum: scoreSum};
-                            console.log('record = ' + JSON.stringify(record));
-                            log.records.push({
-                                "userId" : userId,
-                                "scoreSum"   : scoreSum
-                            });
-                            console.log('log = ' + log);
-                            console.log('log = ' + JSON.stringify(log));
-                    }
+                users.forEach(user => {
+
+                    scores.forEach(score => {
+                            let sid = user.id + '/' +score.id
+                            let checkbox = document.getElementById(sid)
+                            if(checkbox.checked){
+                                scoreSum = scoreSum + parseInt(checkbox.value);
+                            }
+                    });
+
+                    log.records.push({
+                                     "userId" : user.id,
+                                     "scoreSum"   : scoreSum
+                                });
+                                scoreSum = 0;
+
                 });
-            });
-
 
             const response = await fetch("/api/logs/"+logId, {
                 method: 'PUT',
@@ -132,12 +143,11 @@
 
 Дата: <input type="date" id="date-input">
 
-<table class="users">
+<table class="users" id="table">
     <thead>
     <tr>
         <th>id</th>
         <th>Имя</th>
-        <th>Отметки</th>
     </tr>
     </thead>
     <tbody id="usersTableBody">

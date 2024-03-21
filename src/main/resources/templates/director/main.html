@@ -51,7 +51,6 @@
                 $('#addRecords').css("visibility", "hidden");
              } else{
                 $('#addPathfinder').css("visibility", "visible");
-                $('#addRecords').css("visibility", "visible");
              }
 
              if(club.id!=null){
@@ -69,6 +68,11 @@
 
             const usersTableBody = document.getElementById("usersTableBody")
 
+             if(usersL != null && usersL.length>0){
+                $('#addRecords').css("visibility", "visible");
+             } else{
+                 $('#addRecords').css("visibility", "hidden");
+             }
 
 var tr = document.getElementById('table').tHead.children[0]
 
