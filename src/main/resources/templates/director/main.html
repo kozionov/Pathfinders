@@ -12,11 +12,16 @@
             src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="../static/graph.js" th:src="@{/graph.js}"></script>
     <script>
         var logId;
         var club;
-        window.onload = async () => {
+        var gr
 
+        window.onload = async () => {
+            gr = [];
+            gr.push(["Element", "Density", { role: "style" } ])
 
             console.log($('#pid').html())
             club = await fetchClubByUserId($('#pid').html());
@@ -76,6 +81,7 @@ var i = 0;
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
 
+
                 row.insertCell(0).innerHTML = user.id;
 
                 const cell2 = row.insertCell(1);
@@ -84,18 +90,24 @@ var i = 0;
                 detailsLink.href = "/user?id=" + user.id;
                 cell2.appendChild(detailsLink);
 
-                let scoresQ="";
+                let scoresQ = 0;
                 let m = 2;
                 records.forEach(rec => {
                     if(rec.userId==user.id){
                         if (rec.scoreSum != null){
+                        scoresQ = scoresQ + rec.scoreSum;
                         row.insertCell(m).innerHTML = rec.scoreSum;
                         m=m+1;
                         }
                     }
                 });
 
+               gr.push([ user.name + " " + user.surname, parseInt(scoresQ), "#b87333"])
+
             });
+
+            console.log(gr)
+            showGraph();
         }
 
         async function deleteUser(pointerEvent) {
@@ -115,41 +127,7 @@ var i = 0;
             window.location.href = "/logRecord/create?id=" + logId;
         }
     </script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" th:inline="javascript">
 
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-       var data = google.visualization.arrayToDataTable([
-        ["Element", "Density", { role: "style" } ],
-        ["Copper", 8.94, "#b87333"],
-        ["Silver", 10.49, "silver"],
-        ["Gold", 19.30, "gold"],
-        ["Platinum", 21.45, "color: #e5e4e2"]
-      ]);
-
-      var view = new google.visualization.DataView(data);
-      view.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
-
-      var options = {
-        title: "Баллы",
-        width: 600,
-        height: 400,
-        bar: {groupWidth: "95%"},
-        legend: { position: "none" },
-      };
-      var chart = new google.visualization.BarChart(document.getElementById("chart_div"));
-            chart.draw(data, options);
-        }
-    </script>
 </head>
 <body>
 
