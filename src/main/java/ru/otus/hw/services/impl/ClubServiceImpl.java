@@ -29,8 +29,11 @@ import java.util.stream.Collectors;
 public class ClubServiceImpl implements ClubService {
 
     private final ClubRepository clubRepository;
+
     private final UserRepository userRepository;
+
     private final LogRepository logRepository;
+
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)

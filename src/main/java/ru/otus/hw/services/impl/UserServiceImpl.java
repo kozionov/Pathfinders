@@ -30,9 +30,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final RoleRepository roleRepository;
+
     private final LogRepository logRepository;
+
     private final ClubRepository clubRepository;
+
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -70,18 +74,21 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto insert(UserCreateDto userCreateDto) {
-        var user = save(0L, userCreateDto.name(), userCreateDto.surname(), userCreateDto.mobileNumber(), userCreateDto.email(), userCreateDto.login(), userCreateDto.password(), userCreateDto.roleId());
+        var user = save(0L, userCreateDto.name(), userCreateDto.surname(), userCreateDto.mobileNumber(),
+                userCreateDto.email(), userCreateDto.login(), userCreateDto.password(), userCreateDto.roleId());
         return modelMapper.map(user, UserDto.class);
     }
 
     @Transactional
     @Override
     public UserDto update(UserUpdateDto userUpdateDto) {
-        var user = save(userUpdateDto.id(), userUpdateDto.name(), userUpdateDto.surname(), userUpdateDto.mobileNumber(), userUpdateDto.email(), userUpdateDto.login(), userUpdateDto.password(), userUpdateDto.roleId());
+        var user = save(userUpdateDto.id(), userUpdateDto.name(), userUpdateDto.surname(), userUpdateDto.mobileNumber(),
+                userUpdateDto.email(), userUpdateDto.login(), userUpdateDto.password(), userUpdateDto.roleId());
         return modelMapper.map(user, UserDto.class);
     }
 
-    private UserDto save(Long id, String name, String surname, String mobileNumber, String email, String login, String password, long roleId) {
+    private UserDto save(Long id, String name, String surname, String mobileNumber, String email, String login,
+                         String password, long roleId) {
         var role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
         var user = new User(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role);
@@ -93,9 +100,12 @@ public class UserServiceImpl implements UserService {
     private void addUserToLog(User user) {
         UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal.getRole().equals("DIRECTOR")) {
-            User dir = userRepository.findById(principal.getId()).orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
-            Club club = clubRepository.findByDirector(dir).orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
-            Log log = club.getLog().stream().filter(l -> testDate(l.getDateFrom(), l.getDateTo())).findFirst().orElseThrow();
+            User dir = userRepository.findById(principal.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
+            Club club = clubRepository.findByDirector(dir)
+                    .orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
+            Log log = club.getLog().stream()
+                    .filter(l -> testDate(l.getDateFrom(), l.getDateTo())).findFirst().orElseThrow();
             log.getMembers().add(user);
             logRepository.save(log);
         }

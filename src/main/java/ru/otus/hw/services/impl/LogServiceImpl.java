@@ -25,9 +25,13 @@ import java.util.stream.Collectors;
 public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
+
     private final UserRepository userRepository;
+
     private final RecordRepository recordRepository;
+
     private final ClubRepository clubRepository;
+
     private final ModelMapper modelMapper;
 
     @Transactional

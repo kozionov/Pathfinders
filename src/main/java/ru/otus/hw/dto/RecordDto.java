@@ -11,8 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class RecordDto {
+
     private LocalDate classDate;
+
     private Long userId;
+
     private Integer scoreSum;
 
     public RecordDto(LocalDate classDate, User user, Integer scoreSum) {
