@@ -55,40 +55,40 @@
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
-<h2>Создание пользователя:</h2>
-<form id="create-form" action="create.html" style="width: 200px; padding-left: 20px">
-    <div class="form-group">
+<h3>Создание пользователя:</h3>
+<form id="create-form" action="create.html" class="col-lg-6 offset-lg-3" style="width: 200px">
+    <div class="row justify-content-center">
         <label for="user-name-input">Имя:</label>
         <input id="user-name-input" name="title" type="text"/>
     </div>
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-surname-input">Фамилия:</label>
         <input id="user-surname-input" name="title" type="text"/>
     </div>
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-mobileNumber-input">Телефон:</label>
         <input id="user-mobileNumber-input" name="title" type="text"/>
     </div>
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-email-input">Email:</label>
         <input id="user-email-input" name="title" type="text"/>
     </div>
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-login-input">Логин:</label>
         <input id="user-login-input" name="title" type="text"/>
     </div>
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-password-input">Пароль:</label>
         <input id="user-password-input" name="title" type="text"/>
     </div>
 
-    <div class="form-group">
+    <div class="row justify-content-center">
         <label for="user-role-dropdown">Роль:</label>
         <select id="user-role-dropdown" name="roleId">
         </select>
     </div>
-
-    <div class="btn-group" role="group" aria-label="Basic example">
+    <br/>
+    <div class="btn-group" role="group">
         <button type="button" onclick="saveUser()" class="btn btn-primary">Сохранить</button>
         <a th:href="@{/}">
             <button type="button" class="btn btn-primary">Отмена</button>
