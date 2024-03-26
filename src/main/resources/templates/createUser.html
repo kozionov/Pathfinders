@@ -55,44 +55,43 @@
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
-<form id="create-form" action="create.html" style="width: 200px">
-    <h3>Создание пользователя:</h3>
-
-    <div class="row">
+<h2>Создание пользователя:</h2>
+<form id="create-form" action="create.html" style="width: 200px; padding-left: 20px">
+    <div class="form-group">
         <label for="user-name-input">Имя:</label>
         <input id="user-name-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="user-surname-input">Фамилия:</label>
         <input id="user-surname-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="user-mobileNumber-input">Телефон:</label>
         <input id="user-mobileNumber-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="user-email-input">Email:</label>
         <input id="user-email-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="user-login-input">Логин:</label>
         <input id="user-login-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="user-password-input">Пароль:</label>
         <input id="user-password-input" name="title" type="text"/>
     </div>
 
-    <div class="row">
+    <div class="form-group">
         <label for="user-role-dropdown">Роль:</label>
         <select id="user-role-dropdown" name="roleId">
         </select>
     </div>
 
-    <div class="row">
-        <button type="button" onclick="saveUser()">Сохранить</button>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" onclick="saveUser()" class="btn btn-primary">Сохранить</button>
         <a th:href="@{/}">
-            <button type="button">Отмена</button>
+            <button type="button" class="btn btn-primary">Отмена</button>
         </a>
     </div>
 </form>

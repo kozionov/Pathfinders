@@ -50,28 +50,27 @@
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
+<h2>Создание клуба:</h2>
 
-<form id="create-form" action="create.html"  style="width: 200px">
-    <h3>Создание клуба:</h3>
-
-    <div class="row">
+<form id="create-form" action="create.html" style="width: 200px; padding-left: 20px">
+    <div class="form-group">
         <label for="club-name-input">Наименование:</label>
         <input id="club-name-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="club-city-input">Город:</label>
         <input id="club-city-input" name="title" type="text"/>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="club-director-dropdown">Директор:</label>
         <select id="club-director-dropdown" name="directorId">
         </select>
     </div>
 
-    <div class="row">
-        <button type="button" onclick="saveClub()">Сохранить</button>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" onclick="saveClub()" class="btn btn-primary">Сохранить</button>
         <a th:href="@{/}">
-            <button type="button">Отмена</button>
+            <button type="button" class="btn btn-primary">Отмена</button>
         </a>
     </div>
 </form>
