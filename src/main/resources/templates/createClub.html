@@ -1,23 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Create club</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
-
-        label {
-            display: inline-block;
-            width: 100px;
-        }
-
-        .row {
-            margin-top: 10px;
-        }
-    </style>
-    <script src="../static/script.js" th:src="@{/script.js}"></script>
+    <div th:replace="fragments::head"></div>
     <script>
         window.onload = async () => {
             const directorSelect = document.getElementById("club-director-dropdown")
@@ -65,8 +49,9 @@
     </script>
 </head>
 <body>
+<div th:replace="~{fragments :: top_panel}"></div>
 
-<form id="create-form" action="create.html">
+<form id="create-form" action="create.html"  style="width: 200px">
     <h3>Создание клуба:</h3>
 
     <div class="row">
@@ -85,7 +70,7 @@
 
     <div class="row">
         <button type="button" onclick="saveClub()">Сохранить</button>
-        <a href="list.html" th:href="@{/}">
+        <a th:href="@{/}">
             <button type="button">Отмена</button>
         </a>
     </div>

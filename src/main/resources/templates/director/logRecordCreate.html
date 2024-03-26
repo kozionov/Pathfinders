@@ -1,33 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Журнал</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
-
-        .users {
-            border: 1px solid steelblue;
-            width: 300px;
-            border-collapse: collapse;
-        }
-
-        .users tr td, th {
-            padding: 5px;
-            border: 1px solid steelblue;
-        }
-
-        .users td:last-child, td:first-child {
-            width: 50px;
-        }
-    </style>
-    <script src="../static/script.js" th:src="@{/script.js}"></script>
-    <script
-            src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
+    <div th:replace="fragments::head"></div>
     <script>
         var logId;
         var users;
@@ -137,7 +111,7 @@
     </script>
 </head>
 <body>
-<a href="#" th:href="@{/logout}">Выход</a>
+<div th:replace="~{fragments :: top_panel}"></div>
 
 <h2>Новое занятие:</h2>
 
@@ -156,10 +130,10 @@
 </table>
 
 <br/>
-<div class="row">
+<div class="row" style="width: 200px">
     <button type="button" onclick="saveLogRecord()">Сохранить</button>
     <a th:href="@{/}">
-        <button type="button">Cancel</button>
+        <button type="button">Отмена</button>
     </a>
 </div>
 </body>
