@@ -6,8 +6,28 @@
 <head th:fragment="head">
 	<meta charset="UTF-8">
 	<link th:href="@{/css/styles.css}" rel="stylesheet" />
-	<title th:text="${title}">Title</title>
+	<title th:text="${title}">Следопыты</title>
 </head>
+
+<!--<head th:replace="~{fragments :: head}"></head>-->
+
+<div th:fragment="header">
+	<header class="p-3 text-bg-dark">
+		<div class="container">
+			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+				<img th:src="@{/pic/Pathfinder_world_logo.png}" width="75px" height="50px"/>
+				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+					<li><a href="#" th:href="@{https://yamolod.info/klub-sledopyt/}" class="nav-link px-2 text-white">О клубе</a></li>
+				</ul>
+				<div class="text-end">
+					<form action="/logout">
+						<input type="submit" value="Выход" class="btn btn-warning"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</header>
+</div>
 
 <div th:fragment="footer">
 	<div class="footer"><p class="footer"></p></div>
