@@ -70,23 +70,23 @@
     <h3>Create new club:</h3>
 
     <div class="row">
-        <label for="club-name-input">Name:</label>
+        <label for="club-name-input">Наименование:</label>
         <input id="club-name-input" name="title" type="text"/>
     </div>
     <div class="row">
-        <label for="club-city-input">City:</label>
+        <label for="club-city-input">Город:</label>
         <input id="club-city-input" name="title" type="text"/>
     </div>
     <div class="row">
-        <label for="club-director-dropdown">Director:</label>
+        <label for="club-director-dropdown">Директор:</label>
         <select id="club-director-dropdown" name="directorId">
         </select>
     </div>
 
     <div class="row">
-        <button type="button" onclick="saveClub()">Save</button>
+        <button type="button" onclick="saveClub()">Сохранить</button>
         <a href="list.html" th:href="@{/}">
-            <button type="button">Cancel</button>
+            <button type="button">Отмена</button>
         </a>
     </div>
 </form>
