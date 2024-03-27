@@ -7,7 +7,9 @@
     <script>
         var logId;
         var club;
-        var gr
+        var gr;
+        var usersL=[];
+        var records=[];
 
         window.onload = async () => {
             gr = [];
@@ -36,19 +38,21 @@
                 $('#addClub').css("visibility", "visible");
              }
 
-
-            const logs = await fetchLogsByClubId(club.id);
-            logId = logs[0].id;
-             const records = await fetchRecordsByLogId(logs[0].id);
-
-             const usersL = await fetchUsersByLogId(logs[0].id);
-
-            const usersTableBody = document.getElementById("usersTableBody")
-
+            if(club.id != null){
+                const logs = await fetchLogsByClubId(club.id);
+                if(logs[0]!=null){
+                    logId = logs[0].id;
+                    records = await fetchRecordsByLogId(logs[0].id);
+                    usersL = await fetchUsersByLogId(logs[0].id);
+                    const usersTableBody = document.getElementById("usersTableBody")
+                }
+            }
              if(usersL != null && usersL.length>0){
                 $('#addRecords').css("visibility", "visible");
+                $('#log').css("visibility", "visible");
              } else{
                  $('#addRecords').css("visibility", "hidden");
+                 $('#log').css("visibility", "hidden");
              }
 
 var tr = document.getElementById('table').tHead.children[0]
@@ -158,7 +162,7 @@ var dates =[];
     <button class="btn btn-primary">Добавить следопыта</button>
 </a>
 
-<div class="container">
+<div class="container" id="log">
     <div class="row">
         <div class="col">
             <h3>Журнал:</h3>
