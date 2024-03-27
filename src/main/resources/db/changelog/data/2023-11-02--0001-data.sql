@@ -5,7 +5,7 @@ insert into role(role_name)
 values ('ADMIN'), ('DIRECTOR'), ('USER');
 
 insert into scores(name, val)
-values ('Поведение', 1), ('Галстук', 1), ('ДЗ', 2);
+values ('Поведение', 1), ('Галстук', 2), ('ДЗ', 3);
 
 insert into users(login, password, role_id, name)
 values ('admin', '$2a$10$SdGnZ4OyVPTWf.EGjljD1.lzS2Nt9gUj2CSSR90Isoqdf2gBM7b/C', 1, 'admin'),
