@@ -16,7 +16,7 @@ if(gr!= null && gr.length>1){
                        2]);
 
       var options = {
-        title: "Баллы",
+        title: "Сумма баллов",
         width: 600,
         height: 400,
         bar: {groupWidth: "95%"},
