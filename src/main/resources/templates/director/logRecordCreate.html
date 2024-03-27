@@ -112,29 +112,35 @@
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Новое занятие:</h3>
 
-<h2>Новое занятие:</h2>
+            Дата: <input type="date" id="date-input">
 
-Дата: <input type="date" id="date-input">
+            <table class="users" id="table">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Имя</th>
+                </tr>
+                </thead>
+                <tbody id="usersTableBody">
 
-<table class="users" id="table">
-    <thead>
-    <tr>
-        <th>id</th>
-        <th>Имя</th>
-    </tr>
-    </thead>
-    <tbody id="usersTableBody">
+                </tbody>
+            </table>
 
-    </tbody>
-</table>
-
-<br/>
-<div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" onclick="saveLogRecord()" class="btn btn-primary">Сохранить</button>
-    <a th:href="@{/}">
-        <button type="button" class="btn btn-primary">Отмена</button>
-    </a>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" onclick="saveLogRecord()" class="btn btn-primary">Сохранить</button>
+                <a th:href="@{/}">
+                    <button type="button" class="btn btn-primary">Отмена</button>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

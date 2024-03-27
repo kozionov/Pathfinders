@@ -133,27 +133,36 @@ var i = 0;
 <a th:href="@{/user/create}" type="button" id="addPathfinder">
     <button class="btn btn-primary">Добавить следопыта</button>
 </a>
-<h3>Журнал:</h3>
 
-<table class="users" id="table">
-    <thead>
-    <tr>
-        <th>id</th>
-        <th>Имя</th>
-    </tr>
-    </thead>
-    <tbody id="usersTableBody">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Журнал:</h3>
 
-    </tbody>
-</table>
-<br/>
+            <table class="users" id="table">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Имя</th>
+                </tr>
+                </thead>
+                <tbody id="usersTableBody">
 
-<a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
-    <button class="btn btn-primary">Провести занятие</button>
-</a>
+                </tbody>
+            </table>
+            <br/>
 
-<div id="chart_div"></div>
-
+            <a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
+                <button class="btn btn-primary">Провести занятие</button>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="chart_div"></div>
+        </div>
+    </div>
+</div>
 <div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>
