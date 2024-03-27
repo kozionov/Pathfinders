@@ -27,11 +27,9 @@
 
              if(club.id==null){
                 $('#addPathfinder').css("visibility", "hidden");
-                $('#addLog').css("visibility", "hidden");
                 $('#addRecords').css("visibility", "hidden");
              } else{
                 $('#addPathfinder').css("visibility", "visible");
-                $('#addLog').css("visibility", "visible");
              }
 
              if(club.id!=null){
@@ -148,9 +146,6 @@ var dates =[];
             window.location.href = "/logRecord/create?id=" + logId;
         }
 
-        function createLog(){
-            window.location.href = "/log/create?clubId=" + club.id;
-        }
     </script>
 
 </head>
@@ -177,7 +172,9 @@ var dates =[];
         </a>
     </div>
     <div>
-        <button class="btn btn-secondary" onclick="createLog(); " id="addLog" disabled>Новый журнал</button>
+        <a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
+            <button class="btn btn-secondary">Провести занятие</button>
+        </a>
     </div>
 </div>
 
@@ -197,13 +194,9 @@ var dates =[];
 
                 </tbody>
             </table>
-            <br/>
-
-            <a type="button" onclick="redirectToLogRecordCreate();" id="addRecords">
-                <button class="btn btn-secondary">Провести занятие</button>
-            </a>
         </div>
     </div>
+    <br/>
     <div class="row">
         <div class="col">
             <div id="chart_div"></div>
