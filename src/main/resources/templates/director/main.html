@@ -54,7 +54,7 @@
 var tr = document.getElementById('table').tHead.children[0]
 
 var i = 0;
-
+var dates =[];
             usersL.forEach(user => {
                     if(i==0){
                         records.forEach(rec => {
@@ -63,6 +63,7 @@ var i = 0;
                                var th = document.createElement('th');
                                 th.innerHTML = rec.classDate;
                                 tr.appendChild(th);
+                                dates.push(rec.classDate);
                             }
                         });
                     i=i+1;
@@ -82,15 +83,38 @@ var i = 0;
 
                 let scoresQ = 0;
                 let m = 2;
+                let userRecords = [];
                 records.forEach(rec => {
                     if(rec.userId==user.id){
-                        if (rec.scoreSum != null){
-                        scoresQ = scoresQ + rec.scoreSum;
-                        row.insertCell(m).innerHTML = rec.scoreSum;
-                        m=m+1;
-                        }
+                        userRecords.push(rec);
                     }
                 });
+
+                dates.forEach(dat => {
+                    let record;
+                        userRecords.every(rec => {
+                            if(dat == rec.classDate){
+                                record = rec;
+                                return false;
+                            }
+                            return true;
+                         });
+
+                            if(record != null && dates.includes(record.classDate)){
+                                if (record.scoreSum != null){
+                                scoresQ = scoresQ + record.scoreSum;
+                                row.insertCell(m).innerHTML = record.scoreSum;
+                                m=m+1;
+                                }
+                            } else{
+                                scoresQ = scoresQ + 0;
+                                row.insertCell(m).innerHTML = 0;
+                                m=m+1;
+                            }
+
+                });
+
+                userRecords =[];
 
                gr.push([ user.name + " " + user.surname, parseInt(scoresQ), "#b87333"])
 
