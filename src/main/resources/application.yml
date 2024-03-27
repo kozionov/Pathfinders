@@ -1,6 +1,8 @@
 spring:
   datasource:
     url: jdbc:h2:mem:maindb
+    username: sa
+    password:
   liquibase:
     enabled: true
   jpa:
