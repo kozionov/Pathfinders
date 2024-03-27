@@ -61,3 +61,5 @@ th, td{
         .users td:last-child, td:first-child {
             width: 50px;
         }
+
+        .box div {display:inline-block; }

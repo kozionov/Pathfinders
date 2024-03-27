@@ -152,21 +152,30 @@ var dates =[];
 <div th:replace="~{fragments :: top_panel}"></div>
 
 <div style="display: none;"><p id="ppid">Roles: <span sec:authentication="principal.id" id="pid"> </span></p></div>
-
-<h3>Клуб:</h3>
-<div id="clubInfo">
+<div class="box">
+    <div>
+        <h4>Клуб:</h4>
+    </div>
+    <div>
+        <div id="clubInfo">
+        </div>
+    </div>
+    <div>
+        <a th:href="@{/club/create}" type="button" id="addClub">
+            <button class="btn btn-primary">Создать клуб</button>
+        </a>
+    </div>
+    <div>
+        <a th:href="@{/user/create}" type="button" id="addPathfinder">
+            <button class="btn btn-primary">Добавить следопыта</button>
+        </a>
+    </div>
 </div>
-<a th:href="@{/club/create}" type="button" id="addClub">
-    <button class="btn btn-primary">Создать клуб</button>
-</a> <br/>
-<a th:href="@{/user/create}" type="button" id="addPathfinder">
-    <button class="btn btn-primary">Добавить следопыта</button>
-</a>
 
 <div class="container" id="log">
     <div class="row">
         <div class="col">
-            <h3>Журнал:</h3>
+            <h4>Журнал:</h4>
             <p id="dFdT"></p>
             <table class="users" id="table">
                 <thead>
