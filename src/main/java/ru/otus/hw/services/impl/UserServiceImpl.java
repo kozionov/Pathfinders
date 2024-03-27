@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
                          String password, long roleId) {
         var role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(roleId)));
-        var user = new User(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role);
+        var user = new User(id, name, surname, mobileNumber, email, login, new BCryptPasswordEncoder().encode(password), role, null);
         user = userRepository.save(user);
         addUserToLog(user);
         return modelMapper.map(user, UserDto.class);
@@ -103,10 +103,12 @@ public class UserServiceImpl implements UserService {
             User dir = userRepository.findById(principal.getId())
                     .orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
             Club club = clubRepository.findByDirector(dir)
-                    .orElseThrow(() -> new EntityNotFoundException("Dir with id %d not found".formatted(principal.getId())));
+                    .orElseThrow(() -> new EntityNotFoundException("Club by director id %d not found".formatted(principal.getId())));
             Log log = club.getLog().stream()
                     .filter(l -> testDate(l.getDateFrom(), l.getDateTo())).findFirst().orElseThrow();
             log.getMembers().add(user);
+            user.setClub(club);
+            userRepository.save(user);
             logRepository.save(log);
         }
     }
