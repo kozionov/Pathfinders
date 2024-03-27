@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -15,8 +16,8 @@ public class LogDto {
 
     private Long id;
 
-    private Date dateFrom;
+    private LocalDate dateFrom;
 
-    private Date dateTo;
+    private LocalDate dateTo;
 
 }
