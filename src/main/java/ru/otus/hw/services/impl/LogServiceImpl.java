@@ -44,7 +44,7 @@ public class LogServiceImpl implements LogService {
         Log log = logById.get();
         List<Record> records = clubDto.records()
                 .stream()
-                .map(x -> new Record(0L, userRepository.findById(x.getUserId()).get(), clubDto.classDate(), x.getScoreSum(), log))
+                .map(x -> new Record(0L, userRepository.findById(x.getUserId()).get(), clubDto.classDate(), x.getScoreSum(), log,null))
                 .collect(Collectors.toList());
         List<Record> collect = records.stream().map(x -> recordRepository.save(x)).collect(Collectors.toList());
         return log;

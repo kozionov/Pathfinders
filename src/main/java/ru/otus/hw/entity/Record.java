@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,4 +33,12 @@ public class Record {
     @ManyToOne
     @JoinColumn(name = "log_id", referencedColumnName = "id", nullable = false)
     private Log log;
+
+    @OneToMany
+    @JoinTable(
+            name="record_score_link",
+            joinColumns = @JoinColumn( name="record_id"),
+            inverseJoinColumns = @JoinColumn( name="score_id")
+    )
+    private List<Score> scores = new ArrayList<>();
 }
