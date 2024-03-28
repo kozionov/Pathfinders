@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.LogCreateDto;
 import ru.otus.hw.dto.LogDto;
+import ru.otus.hw.dto.RecordDto;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.Record;
+import ru.otus.hw.entity.Score;
 import ru.otus.hw.exceptions.EntityNotFoundException;
-import ru.otus.hw.repositories.ClubRepository;
-import ru.otus.hw.repositories.LogRepository;
-import ru.otus.hw.repositories.RecordRepository;
-import ru.otus.hw.repositories.UserRepository;
+import ru.otus.hw.repositories.*;
 import ru.otus.hw.services.LogService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +31,7 @@ public class LogServiceImpl implements LogService {
     private final RecordRepository recordRepository;
 
     private final ClubRepository clubRepository;
+    private final ScoreRepository scoreRepository;
 
     private final ModelMapper modelMapper;
 
@@ -42,10 +43,15 @@ public class LogServiceImpl implements LogService {
             throw new EntityNotFoundException("Log with ids %s not found".formatted(logId));
         }
         Log log = logById.get();
-        List<Record> records = clubDto.records()
-                .stream()
-                .map(x -> new Record(0L, userRepository.findById(x.getUserId()).get(), clubDto.classDate(), x.getScoreSum(), log,null))
-                .collect(Collectors.toList());
+
+        List<Score> scores = scoreRepository.findAll();
+        List<Record> records = new ArrayList<>();
+        for(RecordDto dto : clubDto.records()){
+            List<Score> scoresToSave = new ArrayList<>();
+            dto.getScoreIds().stream().forEach(rs -> scoresToSave.add(scores.stream().filter(q->q.getId().intValue()==rs.intValue()).findFirst().get()));
+            Record record = new Record(0L, userRepository.findById(dto.getUserId()).get(), clubDto.classDate(), dto.getScoreSum(), log, scoresToSave);
+            records.add(record);
+        }
         List<Record> collect = records.stream().map(x -> recordRepository.save(x)).collect(Collectors.toList());
         return log;
     }
