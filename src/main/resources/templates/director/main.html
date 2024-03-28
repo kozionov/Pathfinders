@@ -51,9 +51,11 @@
              if(usersL != null && usersL.length>0){
                 $('#addRecords').css("visibility", "visible");
                 $('#log').css("visibility", "visible");
+                $('#pdf').css("visibility", "visible");
              } else{
                  $('#addRecords').css("visibility", "hidden");
                  $('#log').css("visibility", "hidden");
+                 $('#pdf').css("visibility", "hidden");
              }
 
 var tr = document.getElementById('table').tHead.children[0]
@@ -146,6 +148,20 @@ var dates =[];
             window.location.href = "/logRecord/create?id=" + logId;
         }
 
+        window.jsPDF = window.jspdf.jsPDF;
+        function makePDF(){
+<!--            var doc = new jsPDF();-->
+<!--            doc.text(20,20,"sdfdgdfg");-->
+
+    html2canvas(document.querySelector('#chart_div')).then(function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var doc = new jsPDF('p', 'mm');
+            doc.text(20,20,club.name + " " + club.city);
+            doc.addImage(imgData, 'PNG', 10, 10);
+            doc.save(club.name + '.pdf');
+        });
+    }
+
     </script>
 
 </head>
@@ -176,6 +192,11 @@ var dates =[];
             <button class="btn btn-secondary">Провести занятие</button>
         </a>
     </div>
+
+    <div>
+        <button class="btn btn-secondary" onclick="makePDF();" id="pdf">Статистика в PDF</button>
+    </div>
+
 </div>
 
 <div class="container" id="log">
