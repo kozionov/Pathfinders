@@ -46,9 +46,9 @@ public class LogServiceImpl implements LogService {
 
         List<Score> scores = scoreRepository.findAll();
         List<Record> records = new ArrayList<>();
-        for(RecordDto dto : clubDto.records()){
+        for (RecordDto dto : clubDto.records()) {
             List<Score> scoresToSave = new ArrayList<>();
-            dto.getScoreIds().stream().forEach(rs -> scoresToSave.add(scores.stream().filter(q->q.getId().intValue()==rs.intValue()).findFirst().get()));
+            dto.getScoreIds().stream().forEach(rs -> scoresToSave.add(scores.stream().filter(q -> q.getId().intValue() == rs.intValue()).findFirst().get()));
             Record record = new Record(0L, userRepository.findById(dto.getUserId()).get(), clubDto.classDate(), dto.getScoreSum(), log, scoresToSave);
             records.add(record);
         }

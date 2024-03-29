@@ -45,7 +45,7 @@ public class RecordService {
     }
 
     @Transactional(readOnly = true)
-    public  List<Stat> findByLogIdWithStatistic(long logId) {
+    public List<Stat> findByLogIdWithStatistic(long logId) {
         Log log = logRepository.findById(logId).orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(logId)));
         List<Record> allByLog = recordRepository.findAllByLog(log);
         List<Score> scores = scoreRepository.findAll();
@@ -66,8 +66,8 @@ public class RecordService {
                 });
             });
             List<Integer> y = new ArrayList<>();
-            graph.forEach((k,v)->y.add(v));
-            stats.add(new Stat(user.getId(), user.getName() + user.getSurname(), scorIds, y));
+            scorIds.forEach(s-> y.add(graph.get(s)));
+            stats.add(new Stat(user.getId(), user.getName() + " " + user.getSurname(), scorIds, y));
         });
 
         return stats;

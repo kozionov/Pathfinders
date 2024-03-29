@@ -8,127 +8,126 @@
         var logId;
         var club;
         var gr;
-        var usersL=[];
-        var records=[];
+        var usersL = [];
+        var records = [];
 
         window.onload = async () => {
             gr = [];
-            gr.push(["Element", "Баллы", { role: "style" } ])
+            gr.push(["Element", "Баллы", {role: "style"}])
 
             console.log($('#pid').html())
             club = await fetchClubByUserId($('#pid').html());
             console.log("test" + club.id)
-             const clubInfo = document.getElementById("clubInfo")
-             const clubP = document.createElement('p');
-             if(club.id!=null){
+            const clubInfo = document.getElementById("clubInfo")
+            const clubP = document.createElement('p');
+            if (club.id != null) {
                 clubP.innerHTML = club.name + " " + club.city;
-             }
-             clubInfo.appendChild(clubP);
+            }
+            clubInfo.appendChild(clubP);
 
-             if(club.id==null){
+            if (club.id == null) {
                 $('#addPathfinder').css("visibility", "hidden");
                 $('#addRecords').css("visibility", "hidden");
-             } else{
+            } else {
                 $('#addPathfinder').css("visibility", "visible");
-             }
+            }
 
-             if(club.id!=null){
+            if (club.id != null) {
                 $('#addClub').css("visibility", "hidden");
-             } else{
+            } else {
                 $('#addClub').css("visibility", "visible");
-             }
+            }
 
-            if(club.id != null){
+            if (club.id != null) {
                 const logs = await fetchLogsByClubId(club.id);
-                if(logs[0]!=null){
+                if (logs[0] != null) {
                     logId = logs[0].id;
                     records = await fetchRecordsByLogId(logs[0].id);
                     var stat = await fetchRecordsWithStatByLogId(logs[0].id);
                     usersL = await fetchUsersByLogId(logs[0].id);
                     const usersTableBody = document.getElementById("usersTableBody")
-                    document.getElementById("dFdT").innerHTML='c ' + logs[0].dateFrom + ' по ' + logs[0].dateTo;
+                    document.getElementById("dFdT").innerHTML = 'c ' + logs[0].dateFrom + ' по ' + logs[0].dateTo;
                 }
             }
-             if(usersL != null && usersL.length>0){
+            if (usersL != null && usersL.length > 0) {
                 $('#addRecords').css("visibility", "visible");
                 $('#log').css("visibility", "visible");
                 $('#pdf').css("visibility", "visible");
-             } else{
-                 $('#addRecords').css("visibility", "hidden");
-                 $('#log').css("visibility", "hidden");
-                 $('#pdf').css("visibility", "hidden");
-             }
+            } else {
+                $('#addRecords').css("visibility", "hidden");
+                $('#log').css("visibility", "hidden");
+                $('#pdf').css("visibility", "hidden");
+            }
 
-var tr = document.getElementById('table').tHead.children[0]
+            var tr = document.getElementById('table').tHead.children[0]
 
-var i = 0;
-var dates =[];
+            var i = 0;
+            var dates = [];
             usersL.forEach(user => {
-                    if(i==0){
-                        records.forEach(rec => {
-                            if(rec.userId==user.id){
-                                console.log("+++ " + rec.classDate);
-                               var th = document.createElement('th');
-                                th.innerHTML = rec.classDate;
-                                tr.appendChild(th);
-                                dates.push(rec.classDate);
-                            }
-                        });
-                    i=i+1;
-                    }
+                if (i == 0) {
+                    records.forEach(rec => {
+                        if (rec.userId == user.id) {
+                            console.log("+++ " + rec.classDate);
+                            var th = document.createElement('th');
+                            th.innerHTML = rec.classDate;
+                            tr.appendChild(th);
+                            dates.push(rec.classDate);
+                        }
+                    });
+                    i = i + 1;
+                }
 
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
-
 
                 row.insertCell(0).innerHTML = user.id;
 
                 const cell2 = row.insertCell(1);
                 const detailsLink = document.createElement('a');
                 detailsLink.innerHTML = user.name + " " + user.surname;
-<!--                detailsLink.href = "/user?id=" + user.id;-->
+                <!--                detailsLink.href = "/user?id=" + user.id;-->
                 cell2.appendChild(detailsLink);
 
                 let scoresQ = 0;
                 let m = 2;
                 let userRecords = [];
                 records.forEach(rec => {
-                    if(rec.userId==user.id){
+                    if (rec.userId == user.id) {
                         userRecords.push(rec);
                     }
                 });
 
                 dates.forEach(dat => {
                     let record;
-                        userRecords.every(rec => {
-                            if(dat == rec.classDate){
-                                record = rec;
-                                return false;
-                            }
-                            return true;
-                         });
+                    userRecords.every(rec => {
+                        if (dat == rec.classDate) {
+                            record = rec;
+                            return false;
+                        }
+                        return true;
+                    });
 
-                            if(record != null && dates.includes(record.classDate)){
-                                if (record.scoreSum != null){
-                                scoresQ = scoresQ + record.scoreSum;
-                                row.insertCell(m).innerHTML = record.scoreSum;
-                                m=m+1;
-                                }
-                            } else{
-                                scoresQ = scoresQ + 0;
-                                row.insertCell(m).innerHTML = 0;
-                                m=m+1;
-                            }
+                    if (record != null && dates.includes(record.classDate)) {
+                        if (record.scoreSum != null) {
+                            scoresQ = scoresQ + record.scoreSum;
+                            row.insertCell(m).innerHTML = record.scoreSum;
+                            m = m + 1;
+                        }
+                    } else {
+                        scoresQ = scoresQ + 0;
+                        row.insertCell(m).innerHTML = 0;
+                        m = m + 1;
+                    }
 
                 });
 
-                userRecords =[];
+                userRecords = [];
 
-               gr.push([ user.name + " " + user.surname, parseInt(scoresQ), "#b87333"])
+                gr.push([user.name + " " + user.surname, parseInt(scoresQ), "#b87333"])
 
             });
 
-showStat(stat);
+            showStat(stat);
             console.log(gr)
             showGraph();
 
@@ -147,23 +146,21 @@ showStat(stat);
             }
         }
 
-        function redirectToLogRecordCreate(){
+        function redirectToLogRecordCreate() {
             window.location.href = "/logRecord/create?id=" + logId;
         }
 
         window.jsPDF = window.jspdf.jsPDF;
-        function makePDF(){
-<!--            var doc = new jsPDF();-->
-<!--            doc.text(20,20,"sdfdgdfg");-->
 
-    html2canvas(document.querySelector('#chart_div')).then(function(canvas) {
-            var imgData = canvas.toDataURL('image/png');
-            var doc = new jsPDF('p', 'mm');
-            doc.text(20,20,club.name + " " + club.city);
-            doc.addImage(imgData, 'PNG', 10, 10);
-            doc.save(club.name + '.pdf');
-        });
-    }
+        function makePDF() {
+            html2canvas(document.querySelector('#chart_div')).then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var doc = new jsPDF('p', 'mm');
+                doc.text(20, 20, club.name + " " + club.city);
+                doc.addImage(imgData, 'PNG', 10, 10);
+                doc.save(club.name + '.pdf');
+            });
+        }
 
     </script>
 
@@ -225,16 +222,8 @@ showStat(stat);
         <div class="col">
             <div id="chart_div"></div>
         </div>
-        <div class="col">
-            <div id="pie_div1"></div>
-            <div id="pie_div2"></div>
-            <div id="pie_div3"></div>
-            <div id="pie_div4"></div>
-            <div id="pie_div5"></div>
-            <div id="pie_div6"></div>
-            <div id="pie_div7"></div>
-            <div id="pie_div8"></div>
-            <div id="pie_div9"></div>
+        <div class="col" id="pie">
+            <h6>Выполнение требований</h6>
         </div>
     </div>
 </div>

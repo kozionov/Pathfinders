@@ -20,17 +20,20 @@
             const loginInput = document.getElementById("user-login-input")
             const passwordInput = document.getElementById("user-password-input")
             const roleDropdown = document.getElementById("user-role-dropdown")
-            const user = { name: nameInput.value, surname: surnameInput.value,
-                            mobileNumber: mobileNumberInput.value, email: emailInput.value,
-                            login: loginInput.value, password: passwordInput.value,
-                            roleId: roleDropdown.value}
+            const user = {
+                name: nameInput.value, surname: surnameInput.value,
+                mobileNumber: mobileNumberInput.value, email: emailInput.value,
+                login: loginInput.value, password: passwordInput.value,
+                roleId: roleDropdown.value
+            }
             const response = await fetch("/api/users", {
                 method: 'POST',
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(user)});
+                body: JSON.stringify(user)
+            });
             const status = await response.status
             if (status === 200) {
                 window.location.replace("/")
@@ -38,18 +41,18 @@
         }
 
         function getSelectValues(select) {
-          var result = [];
-          var options = select && select.options;
-          var opt;
+            var result = [];
+            var options = select && select.options;
+            var opt;
 
-          for (var i=0, iLen=options.length; i<iLen; i++) {
-            opt = options[i];
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
 
-            if (opt.selected) {
-              result.push(opt.value || opt.text);
+                if (opt.selected) {
+                    result.push(opt.value || opt.text);
+                }
             }
-          }
-          return result;
+            return result;
         }
     </script>
 </head>

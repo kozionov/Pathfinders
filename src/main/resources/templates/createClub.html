@@ -7,8 +7,8 @@
             const directorSelect = document.getElementById("club-director-dropdown")
             const directors = await fetchAllDirectors();
             directors.forEach(director => {
-            console.log(director.name);
-            console.log(director.id);
+                console.log(director.name);
+                console.log(director.id);
                 directorSelect.add(new Option(director.name, director.id))
             });
         }
@@ -18,14 +18,15 @@
             const nameInput = document.getElementById("club-name-input")
             const cityInput = document.getElementById("club-city-input")
             const directorDropdown = document.getElementById("club-director-dropdown")
-            const club = { name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value}
+            const club = {name: nameInput.value, city: cityInput.value, directorId: directorDropdown.value}
             const response = await fetch("/api/clubs", {
                 method: 'POST',
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(club)});
+                body: JSON.stringify(club)
+            });
             const status = await response.status
             if (status === 200) {
                 window.location.replace("/")
@@ -33,18 +34,18 @@
         }
 
         function getSelectValues(select) {
-          var result = [];
-          var options = select && select.options;
-          var opt;
+            var result = [];
+            var options = select && select.options;
+            var opt;
 
-          for (var i=0, iLen=options.length; i<iLen; i++) {
-            opt = options[i];
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
 
-            if (opt.selected) {
-              result.push(opt.value || opt.text);
+                if (opt.selected) {
+                    result.push(opt.value || opt.text);
+                }
             }
-          }
-          return result;
+            return result;
         }
     </script>
 </head>

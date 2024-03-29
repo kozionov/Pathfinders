@@ -10,7 +10,7 @@
             var now = new Date();
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
-            var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
             $('#date-input').val(today);
 
@@ -27,15 +27,15 @@
             var i = 0;
 
             users.forEach(user => {
-                    if(i==0){
-                        scores.forEach(score => {
-                                var th = document.createElement('th');
-                                th.innerHTML = score.name;
-                                tr.appendChild(th);
+                if (i == 0) {
+                    scores.forEach(score => {
+                        var th = document.createElement('th');
+                        th.innerHTML = score.name;
+                        tr.appendChild(th);
 
-                        });
-                    i=i+1;
-                    }
+                    });
+                    i = i + 1;
+                }
                 const row = usersTableBody.insertRow()
                 row.id = "userRow" + user.id
 
@@ -44,22 +44,22 @@
                 const cell2 = row.insertCell(1);
                 const detailsLink = document.createElement('a');
                 detailsLink.innerHTML = user.name + " " + user.surname;
-<!--                detailsLink.href = "/user?id=" + user.id;-->
+                <!--                detailsLink.href = "/user?id=" + user.id;-->
                 cell2.appendChild(detailsLink);
 
-                let scoresQ="";
+                let scoresQ = "";
                 let m = 2;
                 scores.forEach(score => {
-                        const cell3 = row.insertCell(m);
-                        const scoresBox = document.createElement('div');
-                        var newCheckBox = document.createElement('input');
-                        newCheckBox.type = 'checkbox';
-                        newCheckBox.id = user.id +'/'+ score.id;
-                        newCheckBox.className = "checkBox"
-                        newCheckBox.value = score.val;
-                        scoresBox.appendChild(newCheckBox);
-                        m=m+1
-                        cell3.appendChild(scoresBox);
+                    const cell3 = row.insertCell(m);
+                    const scoresBox = document.createElement('div');
+                    var newCheckBox = document.createElement('input');
+                    newCheckBox.type = 'checkbox';
+                    newCheckBox.id = user.id + '/' + score.id;
+                    newCheckBox.className = "checkBox"
+                    newCheckBox.value = score.val;
+                    scoresBox.appendChild(newCheckBox);
+                    m = m + 1
+                    cell3.appendChild(scoresBox);
 
                 });
 
@@ -67,43 +67,44 @@
         }
 
         async function saveLogRecord() {
-                var date = new Date($('#date-input').val());
-                console.log(date);
-                var log = {
-                    classDate: date,
-                    records: []
-                };
+            var date = new Date($('#date-input').val());
+            console.log(date);
+            var log = {
+                classDate: date,
+                records: []
+            };
 
-                let userId;
-                let scoreSum = 0;
+            let userId;
+            let scoreSum = 0;
 
-                users.forEach(user => {
-                    let scoreIds = [];
-                    scores.forEach(score => {
-                            let sid = user.id + '/' + score.id
-                            let checkbox = document.getElementById(sid)
-                            if(checkbox.checked){
-                                scoreSum = scoreSum + parseInt(checkbox.value);
-                                scoreIds.push(score.id);
-                            }
-                    });
-
-                    log.records.push({
-                                     "userId" : user.id,
-                                     "scoreSum" : scoreSum,
-                                     scoreIds : scoreIds
-                                });
-
-                    scoreSum = 0;
+            users.forEach(user => {
+                let scoreIds = [];
+                scores.forEach(score => {
+                    let sid = user.id + '/' + score.id
+                    let checkbox = document.getElementById(sid)
+                    if (checkbox.checked) {
+                        scoreSum = scoreSum + parseInt(checkbox.value);
+                        scoreIds.push(score.id);
+                    }
                 });
 
-            const response = await fetch("/api/logs/"+logId, {
+                log.records.push({
+                    "userId": user.id,
+                    "scoreSum": scoreSum,
+                    scoreIds: scoreIds
+                });
+
+                scoreSum = 0;
+            });
+
+            const response = await fetch("/api/logs/" + logId, {
                 method: 'PUT',
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(log)});
+                body: JSON.stringify(log)
+            });
             const status = await response.status
             if (status === 200) {
                 window.location.replace("/")
