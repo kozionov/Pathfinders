@@ -15,7 +15,9 @@ public class Stat {
 
     private Long userId;
 
-    private List<Long> x;
+    private String userName;
+
+    private List<String> x;
 
     private List<Integer> y;
 }

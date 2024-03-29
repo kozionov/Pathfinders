@@ -49,25 +49,25 @@ public class RecordService {
         Log log = logRepository.findById(logId).orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(logId)));
         List<Record> allByLog = recordRepository.findAllByLog(log);
         List<Score> scores = scoreRepository.findAll();
-        List<Long> scorIds = scores.stream().map(s -> s.getId()).collect(Collectors.toList());
+        List<String> scorIds = scores.stream().map(s -> s.getName()).collect(Collectors.toList());
         Map<User, List<Record>> collect = allByLog.stream().collect(Collectors.groupingBy(Record::getUser));
         List<Stat> stats = new ArrayList<>();
         collect.forEach((user, records) -> {
 
-            Map<Long, Integer> graph = new HashMap<>();
+            Map<String, Integer> graph = new HashMap<>();
             scorIds.forEach(s -> graph.put(s, 0));
 
             records.stream().map(r -> r.getScores()).forEach(s -> {
                 s.stream().forEach(x -> {
-                    if (scorIds.contains(x.getId())) {
-                        int i = graph.get(x.getId()) + 1;
-                        graph.replace(x.getId(), i);
+                    if (scorIds.contains(x.getName())) {
+                        int i = graph.get(x.getName()) + 1;
+                        graph.replace(x.getName(), i);
                     }
                 });
             });
             List<Integer> y = new ArrayList<>();
             graph.forEach((k,v)->y.add(v));
-            stats.add(new Stat(user.getId(), scorIds, y));
+            stats.add(new Stat(user.getId(), user.getName() + user.getSurname(), scorIds, y));
         });
 
         return stats;
