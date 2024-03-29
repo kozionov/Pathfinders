@@ -49,10 +49,12 @@ function showStat(stat) {
                 is3D: false
             };
 
+            let divChart = document.createElement('div');
             var chart = new google.visualization.PieChart(
-                document.getElementById("pie_div" + dat.userId)
+                divChart
             );
             chart.draw(data, options);
+            document.getElementById("pie").appendChild(divChart);
         });
     }
 }
