@@ -4,13 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.dto.RecordDto;
-import ru.otus.hw.dto.Stat;
 import ru.otus.hw.entity.Record;
-import ru.otus.hw.entity.User;
 import ru.otus.hw.services.impl.RecordService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +28,6 @@ public class RecordController {
     @GetMapping("/api/records/log/{id}")
     public List<RecordDto> getRecordByLog(@PathVariable("id") long id) {
         return recordService.findByLogId(id);
-    }
-
-    @GetMapping("/api/records/stat/log/{id}")
-    public List<Stat> getRecordByLogWithStat(@PathVariable("id") long id) {
-        return recordService.findByLogIdWithStatistic(id);
     }
 
     @PostMapping("/api/records")

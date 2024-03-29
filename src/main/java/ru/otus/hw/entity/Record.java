@@ -36,9 +36,9 @@ public class Record {
 
     @OneToMany
     @JoinTable(
-            name="record_score_link",
-            joinColumns = @JoinColumn( name="record_id"),
-            inverseJoinColumns = @JoinColumn( name="score_id")
+            name = "record_score_link",
+            joinColumns = @JoinColumn(name = "record_id"),
+            inverseJoinColumns = @JoinColumn(name = "score_id")
     )
     private List<Score> scores = new ArrayList<>();
 }
