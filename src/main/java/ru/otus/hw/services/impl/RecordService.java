@@ -66,7 +66,7 @@ public class RecordService {
                 });
             });
             List<Integer> y = new ArrayList<>();
-            graph.forEach((k, v) -> y.add(v));
+            scorIds.forEach(s-> y.add(graph.get(s)));
             stats.add(new Stat(user.getId(), user.getName() + " " + user.getSurname(), scorIds, y));
         });
 
