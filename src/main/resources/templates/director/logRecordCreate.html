@@ -78,21 +78,23 @@
                 let scoreSum = 0;
 
                 users.forEach(user => {
-
+                    let scoreIds = [];
                     scores.forEach(score => {
-                            let sid = user.id + '/' +score.id
+                            let sid = user.id + '/' + score.id
                             let checkbox = document.getElementById(sid)
                             if(checkbox.checked){
                                 scoreSum = scoreSum + parseInt(checkbox.value);
+                                scoreIds.push(score.id);
                             }
                     });
 
                     log.records.push({
                                      "userId" : user.id,
-                                     "scoreSum"   : scoreSum
+                                     "scoreSum" : scoreSum,
+                                     scoreIds : scoreIds
                                 });
-                                scoreSum = 0;
 
+                    scoreSum = 0;
                 });
 
             const response = await fetch("/api/logs/"+logId, {

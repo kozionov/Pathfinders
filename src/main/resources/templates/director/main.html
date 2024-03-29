@@ -43,6 +43,7 @@
                 if(logs[0]!=null){
                     logId = logs[0].id;
                     records = await fetchRecordsByLogId(logs[0].id);
+                    var stat = await fetchRecordsWithStatByLogId(logs[0].id);
                     usersL = await fetchUsersByLogId(logs[0].id);
                     const usersTableBody = document.getElementById("usersTableBody")
                     document.getElementById("dFdT").innerHTML='c ' + logs[0].dateFrom + ' по ' + logs[0].dateTo;
@@ -127,8 +128,10 @@ var dates =[];
 
             });
 
+showStat(stat);
             console.log(gr)
             showGraph();
+
         }
 
         async function deleteUser(pointerEvent) {
@@ -221,6 +224,17 @@ var dates =[];
     <div class="row">
         <div class="col">
             <div id="chart_div"></div>
+        </div>
+        <div class="col">
+            <div id="pie_div1"></div>
+            <div id="pie_div2"></div>
+            <div id="pie_div3"></div>
+            <div id="pie_div4"></div>
+            <div id="pie_div5"></div>
+            <div id="pie_div6"></div>
+            <div id="pie_div7"></div>
+            <div id="pie_div8"></div>
+            <div id="pie_div9"></div>
         </div>
     </div>
 </div>
