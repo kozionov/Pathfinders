@@ -52,6 +52,12 @@ async function fetchRecordsByLogId(id) {
   return records;
 }
 
+async function fetchRecordsWithStatByLogId(id) {
+  const recordsResponse = await fetch("/api/records/stat/log/" + id);
+  const records = await recordsResponse.json();
+  return records;
+}
+
 async function fetchUsersByLogId(id) {
   const usersResponse = await fetch("/api/users/log/" + id);
   const users = await usersResponse.json();

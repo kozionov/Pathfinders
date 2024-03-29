@@ -26,4 +26,39 @@ if(gr!= null && gr.length>1){
             chart.draw(data, options);
 }
         }
+};
+
+   function showStat(stat){
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            stat.forEach(dat => {
+                    pie = [];
+                    pie.push(["Element", "Баллы"]);
+                    dat.y.forEach(function (value, i) {
+                        pie.push([""+i,value]);
+                    });
+//                  var data = google.visualization.arrayToDataTable([
+//                    ["Task", "Hours per Day"],
+//                    ["Work", 11],
+//                    ["Eat", 2],
+//                    ["Commute", 2],
+//                    ["Watch TV", 2],
+//                    ["Sleep", 7]
+//                  ]);
+
+                  var data = google.visualization.arrayToDataTable(pie);
+
+                  var options = {
+                    title: "",
+                    is3D: false
+                  };
+
+                  var chart = new google.visualization.PieChart(
+                    document.getElementById("pie_div" + dat.userId)
+                  );
+                  chart.draw(data, options);
+            });
         }
+     }

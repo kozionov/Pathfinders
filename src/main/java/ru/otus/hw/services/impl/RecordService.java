@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.RecordDto;
+import ru.otus.hw.dto.Stat;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.Record;
+import ru.otus.hw.entity.Score;
+import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.LogRepository;
 import ru.otus.hw.repositories.RecordRepository;
+import ru.otus.hw.repositories.ScoreRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,6 +24,8 @@ public class RecordService {
     private final RecordRepository recordRepository;
 
     private final LogRepository logRepository;
+
+    private final ScoreRepository scoreRepository;
 
     @Transactional(readOnly = true)
     public RecordDto findById(long id) {
@@ -37,6 +42,35 @@ public class RecordService {
         Log log = logRepository.findById(logId).orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(logId)));
         List<Record> allByLog = recordRepository.findAllByLog(log);
         return allByLog.stream().map(b -> new RecordDto(b.getClassDate(), b.getUser(), b.getScoreSum())).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public  List<Stat> findByLogIdWithStatistic(long logId) {
+        Log log = logRepository.findById(logId).orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(logId)));
+        List<Record> allByLog = recordRepository.findAllByLog(log);
+        List<Score> scores = scoreRepository.findAll();
+        List<Long> scorIds = scores.stream().map(s -> s.getId()).collect(Collectors.toList());
+        Map<User, List<Record>> collect = allByLog.stream().collect(Collectors.groupingBy(Record::getUser));
+        List<Stat> stats = new ArrayList<>();
+        collect.forEach((user, records) -> {
+
+            Map<Long, Integer> graph = new HashMap<>();
+            scorIds.forEach(s -> graph.put(s, 0));
+
+            records.stream().map(r -> r.getScores()).forEach(s -> {
+                s.stream().forEach(x -> {
+                    if (scorIds.contains(x.getId())) {
+                        int i = graph.get(x.getId()) + 1;
+                        graph.replace(x.getId(), i);
+                    }
+                });
+            });
+            List<Integer> y = new ArrayList<>();
+            graph.forEach((k,v)->y.add(v));
+            stats.add(new Stat(user.getId(), scorIds, y));
+        });
+
+        return stats;
     }
 
     @Transactional(readOnly = true)
