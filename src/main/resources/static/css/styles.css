@@ -49,22 +49,6 @@ th, td {
     background-color: blue;
 }
 
-
-.users {
-    border: 1px solid steelblue;
-    width: 300px;
-    border-collapse: collapse;
-}
-
-.users tr td, th {
-    padding: 5px;
-    border: 1px solid steelblue;
-}
-
-.users td:last-child, td:first-child {
-    width: 50px;
-}
-
 .box div {
     display: inline-block;
 }
