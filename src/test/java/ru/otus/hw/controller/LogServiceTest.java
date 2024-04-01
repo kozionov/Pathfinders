@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Сервис создания клуба ")
-public class ClubServiceTest {
+@DisplayName("Сервис создания журнала ")
+public class LogServiceTest {
 
     @Test
     @DisplayName("должен определять вторую половину года")
