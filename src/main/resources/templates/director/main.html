@@ -39,14 +39,14 @@
             }
 
             if (club.id != null) {
-                const logs = await fetchLogsByClubId(club.id);
-                if (logs[0] != null) {
-                    logId = logs[0].id;
-                    records = await fetchRecordsByLogId(logs[0].id);
-                    var stat = await fetchRecordsWithStatByLogId(logs[0].id);
-                    usersL = await fetchUsersByLogId(logs[0].id);
+                const log = await fetchLogByClubId(club.id);
+                if (log != null) {
+                    logId = log.id;
+                    records = await fetchRecordsByLogId(log.id);
+                    var stat = await fetchRecordsWithStatByLogId(log.id);
+                    usersL = await fetchUsersByLogId(log.id);
                     const usersTableBody = document.getElementById("usersTableBody")
-                    document.getElementById("dFdT").innerHTML = 'c ' + logs[0].dateFrom + ' по ' + logs[0].dateTo;
+                    document.getElementById("dFdT").innerHTML = 'c ' + log.dateFrom + ' по ' + log.dateTo;
                 }
             }
             if (usersL != null && usersL.length > 0) {

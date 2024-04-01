@@ -58,21 +58,28 @@ public class LogServiceImpl implements LogService {
 
     @Transactional(readOnly = true)
     @Override
-    public long count() {
-        return 0;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public List<LogDto> findByClubId(long id) {
         return clubRepository.findById(id).orElseThrow()
                 .getLog()
                 .stream()
-                .filter(l -> testDate(l.getDateFrom(), l.getDateTo()))
                 .map(x -> modelMapper.map(x, LogDto.class)).toList();
     }
 
-    private boolean testDate(LocalDate from, LocalDate to) {
+    @Transactional(readOnly = true)
+    @Override
+    public LogDto findCurrentByClubId(long id) {
+        return clubRepository.findById(id).orElseThrow()
+                .getLog()
+                .stream()
+                .filter(l -> isActiveLog(l.getDateFrom(), l.getDateTo()))
+                .findFirst()
+                .map(x -> modelMapper.map(x, LogDto.class))
+                .orElseThrow(() -> {
+                    throw new EntityNotFoundException("Активных журналов для клуба с id = %s не найдено".formatted(id));
+                });
+    }
+
+    private boolean isActiveLog(LocalDate from, LocalDate to) {
         return LocalDate.now().isAfter(from) && LocalDate.now().isBefore(to);
     }
 }

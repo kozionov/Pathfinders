@@ -69,3 +69,9 @@ async function fetchLogsByClubId(id) {
     const logs = await logsResponse.json();
     return logs;
 }
+
+async function fetchLogByClubId(id) {
+    const logResponse = await fetch("/api/log/" + id);
+    const log = await logResponse.json();
+    return log;
+}
