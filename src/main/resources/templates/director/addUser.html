@@ -58,46 +58,53 @@
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
-<h3>Создание пользователя:</h3>
-<form id="create-form" action="create.html" class="col-lg-6 offset-lg-3" style="width: 200px">
-    <div class="row justify-content-center">
-        <label for="user-name-input">Имя:</label>
-        <input id="user-name-input" name="title" type="text"/>
-    </div>
-    <div class="row justify-content-center">
-        <label for="user-surname-input">Фамилия:</label>
-        <input id="user-surname-input" name="title" type="text"/>
-    </div>
-    <div class="row justify-content-center">
-        <label for="user-mobileNumber-input">Телефон:</label>
-        <input id="user-mobileNumber-input" name="title" type="text"/>
-    </div>
-    <div class="row justify-content-center">
-        <label for="user-email-input">Email:</label>
-        <input id="user-email-input" name="title" type="text"/>
-    </div>
-    <div class="row justify-content-center">
-        <label for="user-login-input">Логин:</label>
-        <input id="user-login-input" name="title" type="text"/>
-    </div>
-    <div class="row justify-content-center">
-        <label for="user-password-input">Пароль:</label>
-        <input id="user-password-input" name="title" type="text"/>
-    </div>
+<div class="row">
+    <div class="col">
+        <h3>Создание пользователя:</h3>
+        <form id="create-form" action="create.html" class="col-lg-6 offset-lg-3" style="width: 200px">
+            <div class="row justify-content-center">
+                <label for="user-name-input">Имя:</label>
+                <input id="user-name-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-surname-input">Фамилия:</label>
+                <input id="user-surname-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-mobileNumber-input">Телефон:</label>
+                <input id="user-mobileNumber-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-email-input">Email:</label>
+                <input id="user-email-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-login-input">Логин:</label>
+                <input id="user-login-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-password-input">Пароль:</label>
+                <input id="user-password-input" name="title" type="text"/>
+            </div>
 
-    <div class="row justify-content-center">
-        <label for="user-role-dropdown">Роль:</label>
-        <select id="user-role-dropdown" name="roleId">
-        </select>
+            <div class="row justify-content-center">
+                <label for="user-role-dropdown">Роль:</label>
+                <select id="user-role-dropdown" name="roleId">
+                </select>
+            </div>
+            <br/>
+            <div class="btn-group" role="group">
+                <button type="button" onclick="saveUser()" class="btn btn-secondary">Сохранить</button>
+                <a th:href="@{/}">
+                    <button type="button" class="btn btn-secondary">Отмена</button>
+                </a>
+            </div>
+        </form>
     </div>
-    <br/>
-    <div class="btn-group" role="group">
-        <button type="button" onclick="saveUser()" class="btn btn-secondary">Сохранить</button>
-        <a th:href="@{/}">
-            <button type="button" class="btn btn-secondary">Отмена</button>
-        </a>
+    <div class="col">
+        Добавление существующего:
     </div>
-</form>
+</div>
 
 </body>
 </html>
