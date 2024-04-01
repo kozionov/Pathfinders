@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.LogCreateDto;
 import ru.otus.hw.dto.LogDto;
 import ru.otus.hw.dto.RecordDto;
+import ru.otus.hw.entity.Club;
 import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.Record;
 import ru.otus.hw.entity.Score;
@@ -15,6 +16,7 @@ import ru.otus.hw.repositories.*;
 import ru.otus.hw.services.LogService;
 
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class LogServiceImpl implements LogService {
     private final RecordRepository recordRepository;
 
     private final ClubRepository clubRepository;
+
     private final ScoreRepository scoreRepository;
 
     private final ModelMapper modelMapper;
@@ -58,25 +61,68 @@ public class LogServiceImpl implements LogService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<LogDto> findByClubId(long id) {
-        return clubRepository.findById(id).orElseThrow()
+    public List<LogDto> findByClubId(long clubId) {
+        return clubRepository.findById(clubId).orElseThrow(() -> {
+                    throw new EntityNotFoundException("Club with ids %s not found".formatted(clubId));
+                })
                 .getLog()
                 .stream()
                 .map(x -> modelMapper.map(x, LogDto.class)).toList();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public LogDto findCurrentByClubId(long id) {
-        return clubRepository.findById(id).orElseThrow()
-                .getLog()
+    public LogDto findCurrentByClubId(long clubId) {
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
+            throw new EntityNotFoundException("Club with ids %s not found".formatted(clubId));
+        });
+        Optional<Log> logByClubId = club.getLog()
                 .stream()
                 .filter(l -> isActiveLog(l.getDateFrom(), l.getDateTo()))
-                .findFirst()
-                .map(x -> modelMapper.map(x, LogDto.class))
-                .orElseThrow(() -> {
-                    throw new EntityNotFoundException("Активных журналов для клуба с id = %s не найдено".formatted(id));
-                });
+                .findFirst();
+        if (logByClubId.isPresent()) {
+            return modelMapper.map(logByClubId.get(), LogDto.class);
+        } else {
+            Log newLog = createNewLog();
+            club.getLog().add(newLog);
+            clubRepository.save(club);
+            return modelMapper.map(newLog, LogDto.class);
+        }
+    }
+
+    public Log createNewLog() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate;
+        LocalDate endDate;
+        if (isFirstHalfOfYear(currentDate)) {
+            startDate = LocalDate.of(currentDate.getYear() - 1, 7, 15);
+            endDate = LocalDate.of(currentDate.getYear(), 7, 14);
+        } else {
+            startDate = LocalDate.of(currentDate.getYear(), 7, 15);
+            endDate = LocalDate.of(currentDate.getYear() + 1, 7, 14);
+        }
+        return logRepository.save(new Log(0L, startDate, endDate, new ArrayList<>(), new ArrayList<>()));
+    }
+
+    public static boolean isFirstHalfOfYear(LocalDate currentDate) {
+        return isBetween(currentDate.getMonthValue(), currentDate.getDayOfMonth(), 1, 1, 7, 14);
+    }
+
+    public static boolean isBetween(
+            int currentMonth, int currentDay,
+            int fromMonth, int fromDay,
+            int untilMonth, int untilDay) {
+        MonthDay current = MonthDay.of(currentMonth, currentDay);
+        MonthDay from = MonthDay.of(fromMonth, fromDay);
+        MonthDay until = MonthDay.of(untilMonth, untilDay);
+
+        if (from.compareTo(until) <= 0) {
+            return from.compareTo(current) <= 0 &&
+                    current.compareTo(until) <= 0;
+        } else {
+            return current.compareTo(until) <= 0 ||
+                    current.compareTo(from) >= 0;
+        }
     }
 
     private boolean isActiveLog(LocalDate from, LocalDate to) {

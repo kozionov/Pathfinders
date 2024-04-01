@@ -14,4 +14,6 @@ public interface LogService {
 
     LogDto findCurrentByClubId(long id);
 
+    Log createNewLog();
+
 }
