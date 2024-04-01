@@ -45,10 +45,6 @@ th, td {
     bottom: 0;
 }
 
-.test {
-    background-color: blue;
-}
-
 .box div {
     display: inline-block;
 }

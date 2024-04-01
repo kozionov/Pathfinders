@@ -46,7 +46,7 @@
                     var stat = await fetchRecordsWithStatByLogId(log.id);
                     usersL = await fetchUsersByLogId(log.id);
                     const usersTableBody = document.getElementById("usersTableBody")
-                    document.getElementById("dFdT").innerHTML = 'c ' + log.dateFrom + ' по ' + log.dateTo;
+                    document.getElementById("dFdT").innerHTML = 'c ' + formattedDate(log.dateFrom) + ' по ' + formattedDate(log.dateTo);
                 }
             }
             if (usersL != null && usersL.length > 0) {
@@ -67,9 +67,8 @@
                 if (i == 0) {
                     records.forEach(rec => {
                         if (rec.userId == user.id) {
-                            console.log("+++ " + rec.classDate);
                             var th = document.createElement('th');
-                            th.innerHTML = rec.classDate;
+                            th.innerHTML = formattedDate(rec.classDate);
                             tr.appendChild(th);
                             dates.push(rec.classDate);
                         }
@@ -128,7 +127,6 @@
             });
 
             showStat(stat);
-            console.log(gr)
             showGraph();
 
         }
@@ -160,6 +158,10 @@
                 doc.addImage(imgData, 'PNG', 10, 10);
                 doc.save(club.name + '.pdf');
             });
+        }
+
+        function formattedDate(date){
+            return new Date(Date.parse(date)).toLocaleDateString();
         }
 
     </script>
