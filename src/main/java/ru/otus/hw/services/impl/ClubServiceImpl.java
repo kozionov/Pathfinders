@@ -87,10 +87,10 @@ public class ClubServiceImpl implements ClubService {
         LocalDate startDate;
         LocalDate endDate;
         if (isFirstHalfOfYear(currentDate)) {
-            startDate = LocalDate.of(currentDate.getYear() - 1, 9, 1);
+            startDate = LocalDate.of(currentDate.getYear() - 1, 7, 15);
             endDate = LocalDate.of(currentDate.getYear(), 7, 14);
         } else {
-            startDate = LocalDate.of(currentDate.getYear(), 9, 1);
+            startDate = LocalDate.of(currentDate.getYear(), 7, 15);
             endDate = LocalDate.of(currentDate.getYear() + 1, 7, 14);
         }
         return logRepository.save(new Log(0L, startDate, endDate, new ArrayList<>(), new ArrayList<>()));
