@@ -14,10 +14,62 @@
                 cont.appendChild(text);
             });
         }
+        function changeFon(el){
+				el.style.backgroundColor = 'white';
+			}
+
+			function showAll(){
+			 $('.letter').each(function(index){
+				$(this).css('background-color', 'white');
+			 });
+			}
+
+			$(document).ready(function() {
+				 var text = $('#text').text();
+				 var words = text.split(' ');
+				 var lettersLength = 0;
+				  $('#hiddenText').append($('<div class="container">'));
+				 var box = $('<div class="box">');
+				 for (let i = 0; i < words.length; i++) {
+					var letter = splitWordOnLetter(words[i]);
+					lettersLength = lettersLength + words[i].length;
+					if(lettersLength < 30){
+						box = box.append(letter);
+						$('.container').append(box);
+					} else {
+						box = box.append(letter);
+						$('.container').append(box);
+						box = $('<div class="box">');
+						lettersLength = 0;
+					}
+				 }
+				 $('body').append('<div class="bShow"><button onclick="showAll()">Открыть текст</button></div>');
+			});
+
+			function splitWordOnLetter(word){
+				var letter = '<div class="word">';
+				var letters = word.split('')
+				for (let i = 0; i < letters.length; i++) {
+				if (/[^а-яА-Я]/.test(letters[i])){
+				 letter = letter+ '<div class="char">'+letters[i]+'</div>'
+				} else {
+					letter = letter+ '<div class="letter" onclick="changeFon(this)">'+letters[i]+'</div>';
+					}
+				}
+				letter = letter + '<div class="space"></div></div>';
+				return letter;
+			}
     </script>
 </head>
 <body>
 <div th:replace="~{fragments :: top_panel}"></div>
+<div class="box">
+    <div>
+        <a th:href="@{/}">
+            <button type="button" class="btn btn-secondary">На главную</button>
+        </a>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col" id="pearls">
