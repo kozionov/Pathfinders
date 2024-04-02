@@ -148,6 +148,10 @@
             window.location.href = "/logRecord/create?id=" + logId;
         }
 
+        function redirectToAddUser() {
+            window.location.href = "/user/add?clubId=" + club.id;
+        }
+
         window.jsPDF = window.jspdf.jsPDF;
 
         function makePDF() {
@@ -185,7 +189,7 @@
         </a>
     </div>
     <div>
-        <a th:href="@{/user/add}" type="button" id="addPathfinder">
+        <a type="button" onclick="redirectToAddUser();"  id="addPathfinder">
             <button class="btn btn-secondary">Добавить следопыта</button>
         </a>
     </div>

@@ -1,21 +1,3 @@
-async function fetchBookById(id) {
-    const response = await fetch("/api/books/" + id);
-    const book = await response.json();
-    return book;
-}
-
-async function fetchAllAuthors() {
-    const authorsResponse = await fetch("/api/authors");
-    const authors = await authorsResponse.json();
-    return authors;
-}
-
-async function fetchAllGenres() {
-    const genresResponse = await fetch("/api/genres");
-    const genres = await genresResponse.json();
-    return genres;
-}
-
 async function fetchUserById(id) {
     const response = await fetch("/api/users/" + id);
     const user = await response.json();
@@ -60,6 +42,12 @@ async function fetchRecordsWithStatByLogId(id) {
 
 async function fetchUsersByLogId(id) {
     const usersResponse = await fetch("/api/users/log/" + id);
+    const users = await usersResponse.json();
+    return users;
+}
+
+async function fetchUsersByClub(id) {
+    const usersResponse = await fetch("/api/users/club/" + id);
     const users = await usersResponse.json();
     return users;
 }

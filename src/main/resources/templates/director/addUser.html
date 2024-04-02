@@ -4,6 +4,15 @@
     <div th:replace="fragments::head"></div>
     <script>
         window.onload = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            clubId = urlParams.get('clubId');
+
+            const existUsers = document.getElementById("existUsers")
+            const users = await fetchUsersByClub(clubId);
+            users.forEach(user => {
+                existUsers.add(new Option(user.name + " " + user.sername, user.id))
+            });
+
             const rolesSelect = document.getElementById("user-role-dropdown")
             const roles = await fetchAllRoles();
             roles.forEach(role => {
@@ -102,7 +111,18 @@
         </form>
     </div>
     <div class="col">
-        Добавление существующего:
+        <h3>Добавление существующего:</h3>
+        <div class="row justify-content-center" style="width: fit-content;">
+            <label for="existUsers">Следопыт::</label>
+            <select id="existUsers" name="userId"></select>
+        </div>
+        <br/>
+        <div class="btn-group" role="group">
+            <button type="button" onclick="addUser()" class="btn btn-secondary">Добавить</button>
+            <a th:href="@{/}">
+                <button type="button" class="btn btn-secondary">Отмена</button>
+            </a>
+        </div>
     </div>
 </div>
 
