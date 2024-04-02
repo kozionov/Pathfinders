@@ -2,6 +2,13 @@ docker build -t kozionov/pathfinders .
 docker login
 docker push kozionov/pathfinders
 
+
+
+
+
+
+
+
 docker run --name hello -d --rm -p 8080:8080 hello-world
 
 docker-compose up -d
