@@ -3,13 +3,14 @@ docker login
 docker push kozionov/pathfinders
 
 
+VM: 4868090e-f0a5-11ee-bc67-d00d8278e730
+Login: ubuntuuser
+Password: 12yoLAsr68UL
+
+Установка докер https://selectel.ru/blog/docker-install-ubuntu/
 
 
-
-
-
-
-docker run --name hello -d --rm -p 8080:8080 hello-world
+sudo docker run --name pathfinders -d -p 8080:8080 kozionov/pathfinders - запуск контейнера
 
 docker-compose up -d
 
