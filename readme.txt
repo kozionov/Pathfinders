@@ -6,6 +6,7 @@ docker push kozionov/pathfinders
 VM: 4868090e-f0a5-11ee-bc67-d00d8278e730
 Login: ubuntuuser
 Password: 12yoLAsr68UL
+ssh 81.94.150.210
 
 Установка докер https://selectel.ru/blog/docker-install-ubuntu/
 

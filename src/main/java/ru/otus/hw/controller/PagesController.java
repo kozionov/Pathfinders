@@ -47,5 +47,9 @@ public class PagesController {
     public String logRecordCreate() {
         return "director/logRecordCreate";
     }
+    @GetMapping("/pearls")
+    public String pearls() {
+        return "director/pearls";
+    }
 
 }

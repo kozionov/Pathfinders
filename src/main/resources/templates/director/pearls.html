@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments::head"></div>
+    <script>
+        window.onload = async () => {
+            const pearlsResponse = await fetch("/api/pearls");
+            const pearls = await pearlsResponse.json();
+
+            var cont = document.getElementById('pearls');
+            pearls.forEach(pearl => {
+                const text = document.createElement('p');
+                text.innerHTML = pearl.text;
+                cont.appendChild(text);
+            });
+        }
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments :: top_panel}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col" id="pearls">
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
