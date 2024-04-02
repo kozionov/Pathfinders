@@ -8,6 +8,7 @@
             clubId = urlParams.get('clubId');
 
             const existUsers = document.getElementById("existUsers")
+            existUsers.add(new Option("", 0))
             const users = await fetchUsersByClub(clubId);
             users.forEach(user => {
                 existUsers.add(new Option(user.name + " " + user.sername, user.id))
@@ -21,7 +22,6 @@
         }
 
         async function saveUser() {
-            console.log(getSelectValues(document.getElementById("user-role-dropdown")));
             const nameInput = document.getElementById("user-name-input")
             const surnameInput = document.getElementById("user-surname-input")
             const mobileNumberInput = document.getElementById("user-mobileNumber-input")
@@ -42,6 +42,22 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user)
+            });
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        async function addUser() {
+            const existUsers = document.getElementById("existUsers")
+
+            const response = await fetch("/api/logs/user/" + existUsers.value, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             });
             const status = await response.status
             if (status === 200) {

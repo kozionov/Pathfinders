@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.dto.ClubDto;
 import ru.otus.hw.dto.LogCreateDto;
 import ru.otus.hw.dto.LogDto;
+import ru.otus.hw.entity.Log;
 import ru.otus.hw.services.LogService;
 
 import java.util.List;
@@ -29,6 +30,11 @@ public class LogController {
     @PutMapping("/api/logs/{id}")
     public ClubDto editLog(@PathVariable("id") long id, @RequestBody @Valid LogCreateDto logCreateDto) {
         logService.insert(id, logCreateDto);
+        return new ClubDto();
+    }
+    @PutMapping("/api/logs/user/{id}")
+    public ClubDto addUser(@PathVariable("id") long userId) {
+        logService.addUser(userId);
         return new ClubDto();
     }
 

@@ -2,17 +2,17 @@ package ru.otus.hw.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.LogCreateDto;
 import ru.otus.hw.dto.LogDto;
 import ru.otus.hw.dto.RecordDto;
-import ru.otus.hw.entity.Club;
-import ru.otus.hw.entity.Log;
 import ru.otus.hw.entity.Record;
-import ru.otus.hw.entity.Score;
+import ru.otus.hw.entity.*;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.*;
+import ru.otus.hw.security.UserPrincipal;
 import ru.otus.hw.services.LogService;
 
 import java.time.LocalDate;
@@ -102,6 +102,25 @@ public class LogServiceImpl implements LogService {
             endDate = LocalDate.of(currentDate.getYear() + 1, 7, 14);
         }
         return logRepository.save(new Log(0L, startDate, endDate, new ArrayList<>(), new ArrayList<>()));
+    }
+
+    @Transactional
+    @Override
+    public void addUser(long userId) {
+        UserPrincipal dir = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User director = userRepository.findById(dir.getId()).get();
+        Log activeLog = clubRepository.findByDirector(director).get().getLog()
+                .stream()
+                .filter(l -> isActiveLog(l.getDateFrom(), l.getDateTo()))
+                .findFirst().get();
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new EntityNotFoundException("User with id %s not found".formatted(userId));
+        });
+        if (activeLog.getMembers().stream().anyMatch(u -> u.getId().intValue() == user.getId().intValue())) {
+            throw new RuntimeException("Пользователь уже есть в этом журнале");
+        } else {
+            activeLog.getMembers().add(user);
+        }
     }
 
     public static boolean isFirstHalfOfYear(LocalDate currentDate) {

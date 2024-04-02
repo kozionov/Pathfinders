@@ -16,4 +16,6 @@ public interface LogService {
 
     Log createNewLog();
 
+    void addUser(long userId);
+
 }
