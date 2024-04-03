@@ -3,16 +3,16 @@
 <head>
     <div th:replace="fragments::head"></div>
     <style>
-        .container {
+        .cont {
             overflow:hidden;
             width:100vw;
             font-size:40px;
             text-align: center;
         }
 
-        .box {white-space:nowrap}
+        .box1 {white-space:nowrap}
 
-        .box div {
+        .box1 div {
             display:inline-block;
             margin-top:5px;
         }
@@ -65,25 +65,26 @@
 
 			function makeBlack(text) {
 			    $('#hiddenText').empty();
+			    $('#clearB').remove();
 <!--				 var text = $('#text').text();-->
 				 var words = text.split(' ');
 				 var lettersLength = 0;
-				  $('#hiddenText').append($('<div class="container">'));
-				 var box = $('<div class="box">');
+				  $('#hiddenText').append($('<div class="cont">'));
+				 var box1 = $('<div class="box1">');
 				 for (let i = 0; i < words.length; i++) {
 					var letter = splitWordOnLetter(words[i]);
 					lettersLength = lettersLength + words[i].length;
 					if(lettersLength < 30){
-						box = box.append(letter);
-						$('.container').append(box);
+						box1 = box1.append(letter);
+						$('.cont').append(box1);
 					} else {
-						box = box.append(letter);
-						$('.container').append(box);
-						box = $('<div class="box">');
+						box1 = box1.append(letter);
+						$('.cont').append(box1);
+						box1 = $('<div class="box1">');
 						lettersLength = 0;
 					}
 				 }
-				 $('body').append('<div class="bShow"><button onclick="showAll()">Открыть текст</button></div>');
+				 $('body').append('<div class="bShow" id="clearB"><button onclick="showAll()">Открыть текст</button></div>');
 			}
 
 			function splitWordOnLetter(word){
