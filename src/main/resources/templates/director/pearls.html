@@ -5,7 +5,6 @@
     <style>
         .cont {
             overflow:hidden;
-            width:100vw;
             font-size:40px;
             text-align: center;
         }
@@ -33,15 +32,12 @@
             const pearlsResponse = await fetch("/api/pearls");
             const pearls = await pearlsResponse.json();
 
-            var cont = document.getElementById('pearls');
+            var prl = document.getElementById('prl');
             pearls.forEach(pearl => {
-<!--                const text = document.createElement('p');-->
-<!--                text.innerHTML = pearl.text;-->
-<!--                cont.appendChild(text);-->
                     var btn = document.createElement('input');
                     btn.setAttribute('type' , 'button');
                     btn.setAttribute('value', pearl.link);
-                    cont.appendChild(btn);
+                    prl.appendChild(btn);
                     btn.addEventListener('click',() => setTimeout(function(){
                       console.log("showText");
                       makeBlack(pearl.text);
@@ -54,19 +50,18 @@
         }
 
             function changeFon(el){
-				el.style.backgroundColor = 'white';
+				el.style.backgroundColor = 'lavenderblush';
 			}
 
 			function showAll(){
 			 $('.letter').each(function(index){
-				$(this).css('background-color', 'white');
+				$(this).css('background-color', 'lavenderblush');
 			 });
 			}
 
 			function makeBlack(text) {
 			    $('#hiddenText').empty();
 			    $('#clearB').remove();
-<!--				 var text = $('#text').text();-->
 				 var words = text.split(' ');
 				 var lettersLength = 0;
 				  $('#hiddenText').append($('<div class="cont">'));
@@ -113,7 +108,8 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col" id="pearls">
+        <div class="col" >
+            <div id="prl"></div>
             <div id="hiddenText"/>
         </div>
     </div>
