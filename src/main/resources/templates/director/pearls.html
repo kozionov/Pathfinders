@@ -2,6 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments::head"></div>
+    <style>
+        .container {
+            overflow:hidden;
+            width:100vw;
+            font-size:40px;
+            text-align: center;
+        }
+
+        .box {white-space:nowrap}
+
+        .box div {
+            display:inline-block;
+            margin-top:5px;
+        }
+
+        .word {
+            margin-right: 10px;
+        }
+
+        .letter {
+            margin-right: 5px;
+            background-color:black;
+        }
+
+        .bShow {margin-top:20px;}
+    </style>
     <script>
         window.onload = async () => {
             const pearlsResponse = await fetch("/api/pearls");
@@ -9,12 +35,25 @@
 
             var cont = document.getElementById('pearls');
             pearls.forEach(pearl => {
-                const text = document.createElement('p');
-                text.innerHTML = pearl.text;
-                cont.appendChild(text);
+<!--                const text = document.createElement('p');-->
+<!--                text.innerHTML = pearl.text;-->
+<!--                cont.appendChild(text);-->
+                    var btn = document.createElement('input');
+                    btn.setAttribute('type' , 'button');
+                    btn.setAttribute('value', pearl.link);
+                    cont.appendChild(btn);
+                    btn.addEventListener('click',() => setTimeout(function(){
+                      console.log("showText");
+                      makeBlack(pearl.text);
+                    }));
             });
         }
-        function changeFon(el){
+
+        function showText(){
+            console.log("showText");
+        }
+
+            function changeFon(el){
 				el.style.backgroundColor = 'white';
 			}
 
@@ -24,8 +63,9 @@
 			 });
 			}
 
-			$(document).ready(function() {
-				 var text = $('#text').text();
+			function makeBlack(text) {
+			    $('#hiddenText').empty();
+<!--				 var text = $('#text').text();-->
 				 var words = text.split(' ');
 				 var lettersLength = 0;
 				  $('#hiddenText').append($('<div class="container">'));
@@ -44,7 +84,7 @@
 					}
 				 }
 				 $('body').append('<div class="bShow"><button onclick="showAll()">Открыть текст</button></div>');
-			});
+			}
 
 			function splitWordOnLetter(word){
 				var letter = '<div class="word">';
@@ -73,7 +113,7 @@
 <div class="container">
     <div class="row">
         <div class="col" id="pearls">
-
+            <div id="hiddenText"/>
         </div>
     </div>
 </div>
