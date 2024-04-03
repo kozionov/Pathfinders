@@ -1,6 +1,10 @@
-docker build -t kozionov/pathfinders .
+docker build -t kozionov/pathfinders:v0.0.1 .
 docker login
-docker push kozionov/pathfinders
+docker push kozionov/pathfinders:v0.0.1
+
+docker stop pathfinders
+docker rm pathfinders
+docker pull kozionov/pathfinders:v0.0.1
 
 
 VM: 4868090e-f0a5-11ee-bc67-d00d8278e730
