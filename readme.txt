@@ -2,6 +2,8 @@ docker build -t kozionov/pathfinders:v0.0.1 .
 docker login
 docker push kozionov/pathfinders:v0.0.1
 
+docker ps
+docker ps -a
 docker stop pathfinders
 docker rm pathfinders
 docker pull kozionov/pathfinders:v0.0.1
@@ -10,7 +12,7 @@ docker pull kozionov/pathfinders:v0.0.1
 VM: 4868090e-f0a5-11ee-bc67-d00d8278e730
 Login: ubuntuuser
 Password: 12yoLAsr68UL
-ssh 81.94.150.210
+ssh ubuntuuser@81.94.150.210
 
 Установка докер https://selectel.ru/blog/docker-install-ubuntu/
 
