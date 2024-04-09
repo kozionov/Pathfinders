@@ -73,6 +73,12 @@ services:
 networks:
   network-example:
     external: true
+------------------------------------------------------------------------------
 
 docker-compose -f docker-compose-psgr.yml up -d
 docker-compose -f docker-compose-app.yml up -d
+
+docker network create my-network
+docker network inspect my-network
+
+docker volume create --driver local --opt type=none --opt device=/mnt/docker/volumes/my_volume --opt o=bind my_volume
