@@ -10,8 +10,12 @@ public interface LogService {
 
     Log insert(long logId, LogCreateDto clubDto);
 
-    long count();
-
     List<LogDto> findByClubId(long id);
+
+    LogDto findCurrentByClubId(long id);
+
+    Log createNewLog();
+
+    void addUser(long userId);
 
 }

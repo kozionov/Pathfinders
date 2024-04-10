@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments::head"></div>
+    <script>
+        window.onload = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            clubId = urlParams.get('clubId');
+
+            const existUsers = document.getElementById("existUsers")
+            existUsers.add(new Option("", 0))
+            const users = await fetchUsersByClub(clubId);
+            users.forEach(user => {
+                existUsers.add(new Option(user.name + " " + user.sername, user.id))
+            });
+
+            const rolesSelect = document.getElementById("user-role-dropdown")
+            const roles = await fetchAllRoles();
+            roles.forEach(role => {
+                rolesSelect.add(new Option(role.roleName, role.id))
+            });
+        }
+
+        async function saveUser() {
+            const nameInput = document.getElementById("user-name-input")
+            const surnameInput = document.getElementById("user-surname-input")
+            const mobileNumberInput = document.getElementById("user-mobileNumber-input")
+            const emailInput = document.getElementById("user-email-input")
+            const loginInput = document.getElementById("user-login-input")
+            const passwordInput = document.getElementById("user-password-input")
+            const roleDropdown = document.getElementById("user-role-dropdown")
+            const user = {
+                name: nameInput.value, surname: surnameInput.value,
+                mobileNumber: mobileNumberInput.value, email: emailInput.value,
+                login: loginInput.value, password: passwordInput.value,
+                roleId: roleDropdown.value
+            }
+            const response = await fetch("/api/users", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        async function addUser() {
+            const existUsers = document.getElementById("existUsers")
+
+            const response = await fetch("/api/logs/user/" + existUsers.value, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            const status = await response.status
+            if (status === 200) {
+                window.location.replace("/")
+            }
+        }
+
+        function getSelectValues(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    result.push(opt.value || opt.text);
+                }
+            }
+            return result;
+        }
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments :: top_panel}"></div>
+<div class="row">
+    <div class="col">
+        <h3>Создание пользователя:</h3>
+        <form id="create-form" action="create.html" class="col-lg-6 offset-lg-3" style="width: 200px">
+            <div class="row justify-content-center">
+                <label for="user-name-input">Имя:</label>
+                <input id="user-name-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-surname-input">Фамилия:</label>
+                <input id="user-surname-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-mobileNumber-input">Телефон:</label>
+                <input id="user-mobileNumber-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-email-input">Email:</label>
+                <input id="user-email-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-login-input">Логин:</label>
+                <input id="user-login-input" name="title" type="text"/>
+            </div>
+            <div class="row justify-content-center">
+                <label for="user-password-input">Пароль:</label>
+                <input id="user-password-input" name="title" type="text"/>
+            </div>
+
+            <div class="row justify-content-center">
+                <label for="user-role-dropdown">Роль:</label>
+                <select id="user-role-dropdown" name="roleId">
+                </select>
+            </div>
+            <br/>
+            <div class="btn-group" role="group">
+                <button type="button" onclick="saveUser()" class="btn btn-secondary">Сохранить</button>
+                <a th:href="@{/}">
+                    <button type="button" class="btn btn-secondary">Отмена</button>
+                </a>
+            </div>
+        </form>
+    </div>
+    <div class="col">
+        <h3>Добавление существующего:</h3>
+        <div class="row justify-content-center" style="width: fit-content;">
+            <label for="existUsers">Следопыт::</label>
+            <select id="existUsers" name="userId"></select>
+        </div>
+        <br/>
+        <div class="btn-group" role="group">
+            <button type="button" onclick="addUser()" class="btn btn-secondary">Добавить</button>
+            <a th:href="@{/}">
+                <button type="button" class="btn btn-secondary">Отмена</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "pathfinders"
+      POSTGRES_USER: "pathfinders"
+      POSTGRES_PASSWORD: "pathfinders"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - my_volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
+
+volumes:
+  my_volume:
+    external: true

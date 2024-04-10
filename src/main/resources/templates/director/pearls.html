@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments::head"></div>
+    <style>
+        .cont {
+            overflow:hidden;
+            font-size:40px;
+            text-align: center;
+        }
+
+        .box1 {white-space:nowrap}
+
+        .box1 div {
+            display:inline-block;
+            margin-top:5px;
+        }
+
+        .word {
+            margin-right: 10px;
+        }
+
+        .letter {
+            margin-right: 5px;
+            background-color:currentColor;
+        }
+
+        .bShow {margin-top:20px;}
+    </style>
+    <script>
+        window.onload = async () => {
+            const pearlsResponse = await fetch("/api/pearls");
+            const pearls = await pearlsResponse.json();
+
+            var prl = document.getElementById('prl');
+            pearls.forEach(pearl => {
+                    var btn = document.createElement('input');
+                    btn.setAttribute('type' , 'button');
+                    btn.setAttribute('value', pearl.link);
+                    prl.appendChild(btn);
+                    btn.addEventListener('click',() => setTimeout(function(){
+                      console.log("showText");
+                      makeBlack(pearl.text);
+                    }));
+            });
+        }
+
+        function showText(){
+            console.log("showText");
+        }
+
+            function changeFon(el){
+				el.style.backgroundColor = 'lavenderblush';
+			}
+
+			function showAll(){
+			 $('.letter').each(function(index){
+				$(this).css('background-color', 'lavenderblush');
+			 });
+			}
+
+			function makeBlack(text) {
+			    $('#hiddenText').empty();
+			    $('#clearB').remove();
+				 var words = text.split(' ');
+				 var lettersLength = 0;
+				  $('#hiddenText').append($('<div class="cont">'));
+				 var box1 = $('<div class="box1">');
+				 for (let i = 0; i < words.length; i++) {
+					var letter = splitWordOnLetter(words[i]);
+					lettersLength = lettersLength + words[i].length;
+					if(lettersLength < 30){
+						box1 = box1.append(letter);
+						$('.cont').append(box1);
+					} else {
+						box1 = box1.append(letter);
+						$('.cont').append(box1);
+						box1 = $('<div class="box1">');
+						lettersLength = 0;
+					}
+				 }
+				 $('body').append('<div class="bShow" id="clearB"><button onclick="showAll()">Открыть текст</button></div>');
+			}
+
+			function splitWordOnLetter(word){
+				var letter = '<div class="word">';
+				var letters = word.split('')
+				for (let i = 0; i < letters.length; i++) {
+				if (/[^а-яА-Я]/.test(letters[i])){
+				 letter = letter+ '<div class="char">'+letters[i]+'</div>'
+				} else {
+					letter = letter+ '<div class="letter" onclick="changeFon(this)">'+letters[i]+'</div>';
+					}
+				}
+				letter = letter + '<div class="space"></div></div>';
+				return letter;
+			}
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments :: top_panel}"></div>
+<div class="box">
+    <div>
+        <a th:href="@{/}">
+            <button type="button" class="btn btn-secondary">На главную</button>
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col" >
+            <div id="prl"></div>
+            <div id="hiddenText"/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

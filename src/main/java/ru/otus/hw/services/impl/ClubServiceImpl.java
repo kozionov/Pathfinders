@@ -14,11 +14,10 @@ import ru.otus.hw.entity.Score;
 import ru.otus.hw.entity.User;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.repositories.ClubRepository;
-import ru.otus.hw.repositories.LogRepository;
 import ru.otus.hw.repositories.UserRepository;
 import ru.otus.hw.services.ClubService;
+import ru.otus.hw.services.LogService;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class ClubServiceImpl implements ClubService {
 
     private final UserRepository userRepository;
 
-    private final LogRepository logRepository;
+    private final LogService logService;
 
     private final ModelMapper modelMapper;
 
@@ -76,7 +75,7 @@ public class ClubServiceImpl implements ClubService {
         if (director.isEmpty()) {
             throw new EntityNotFoundException("Director with ids %s not found".formatted(clubCreateDto.getDirectorId()));
         }
-        Log log = logRepository.save(new Log(0L, LocalDate.of(2023, 9, 1), LocalDate.of(2024, 6, 30), new ArrayList<>(), new ArrayList<>()));
+        Log log = logService.createNewLog();
         var club = save(0L, clubCreateDto.getName(), clubCreateDto.getCity(), director.get(), new ArrayList<>(), List.of(log));
         return modelMapper.map(club, ClubDto.class);
     }

@@ -28,6 +28,10 @@ public class UserController {
     public List<UserDto> getAllUsersByLogId(@PathVariable("id") long id) {
         return userService.findAllByLogId(id);
     }
+    @GetMapping("/api/users/club/{id}")
+    public List<UserDto> getAllUsersByClubId(@PathVariable("id") long id) {
+        return userService.findAllByClubId(id);
+    }
 
     @GetMapping("/api/users/{id}")
     public UserDto getUser(@PathVariable("id") long id) {

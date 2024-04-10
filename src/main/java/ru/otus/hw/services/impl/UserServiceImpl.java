@@ -130,4 +130,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Log with id %d not found".formatted(id)));
         return log.getMembers().stream().map(b -> modelMapper.map(b, UserDto.class)).collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserDto> findAllByClubId(long id) {
+        Club club = clubRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Club with id %d not found".formatted(id)));
+        List<User> users = userRepository.findAllByClub(club);
+        return users.stream().map(b -> modelMapper.map(b, UserDto.class)).toList();
+    }
 }

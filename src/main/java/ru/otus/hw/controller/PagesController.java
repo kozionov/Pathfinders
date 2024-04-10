@@ -18,20 +18,14 @@ public class PagesController {
         }
     }
 
-
-    @GetMapping("/book")
-    public String bookDetailsPage() {
-        return "details";
-    }
-
-    @GetMapping("/book/create")
-    public String bookCreatePage() {
-        return "create";
-    }
-
     @GetMapping("/user/create")
     public String userCreatePage() {
         return "createUser";
+    }
+
+    @GetMapping("/user/add")
+    public String userAddPage() {
+        return "director/addUser";
     }
 
     @GetMapping("/user/edit")
@@ -52,6 +46,10 @@ public class PagesController {
     @GetMapping("/logRecord/create")
     public String logRecordCreate() {
         return "director/logRecordCreate";
+    }
+    @GetMapping("/pearls")
+    public String pearls() {
+        return "director/pearls";
     }
 
 }

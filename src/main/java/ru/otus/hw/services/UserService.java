@@ -23,4 +23,6 @@ public interface UserService {
 
     List<UserDto> findAllByLogId(long id);
 
+    List<UserDto> findAllByClubId(long id);
+
 }

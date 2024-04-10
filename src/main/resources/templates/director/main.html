@@ -39,14 +39,14 @@
             }
 
             if (club.id != null) {
-                const logs = await fetchLogsByClubId(club.id);
-                if (logs[0] != null) {
-                    logId = logs[0].id;
-                    records = await fetchRecordsByLogId(logs[0].id);
-                    var stat = await fetchRecordsWithStatByLogId(logs[0].id);
-                    usersL = await fetchUsersByLogId(logs[0].id);
+                const log = await fetchLogByClubId(club.id);
+                if (log != null) {
+                    logId = log.id;
+                    records = await fetchRecordsByLogId(log.id);
+                    var stat = await fetchRecordsWithStatByLogId(log.id);
+                    usersL = await fetchUsersByLogId(log.id);
                     const usersTableBody = document.getElementById("usersTableBody")
-                    document.getElementById("dFdT").innerHTML = 'c ' + logs[0].dateFrom + ' по ' + logs[0].dateTo;
+                    document.getElementById("dFdT").innerHTML = 'c ' + formattedDate(log.dateFrom) + ' по ' + formattedDate(log.dateTo);
                 }
             }
             if (usersL != null && usersL.length > 0) {
@@ -67,9 +67,8 @@
                 if (i == 0) {
                     records.forEach(rec => {
                         if (rec.userId == user.id) {
-                            console.log("+++ " + rec.classDate);
                             var th = document.createElement('th');
-                            th.innerHTML = rec.classDate;
+                            th.innerHTML = formattedDate(rec.classDate);
                             tr.appendChild(th);
                             dates.push(rec.classDate);
                         }
@@ -128,7 +127,6 @@
             });
 
             showStat(stat);
-            console.log(gr)
             showGraph();
 
         }
@@ -150,6 +148,10 @@
             window.location.href = "/logRecord/create?id=" + logId;
         }
 
+        function redirectToAddUser() {
+            window.location.href = "/user/add?clubId=" + club.id;
+        }
+
         window.jsPDF = window.jspdf.jsPDF;
 
         function makePDF() {
@@ -160,6 +162,10 @@
                 doc.addImage(imgData, 'PNG', 10, 10);
                 doc.save(club.name + '.pdf');
             });
+        }
+
+        function formattedDate(date){
+            return new Date(Date.parse(date)).toLocaleDateString();
         }
 
     </script>
@@ -183,7 +189,7 @@
         </a>
     </div>
     <div>
-        <a th:href="@{/user/create}" type="button" id="addPathfinder">
+        <a type="button" onclick="redirectToAddUser();"  id="addPathfinder">
             <button class="btn btn-secondary">Добавить следопыта</button>
         </a>
     </div>
@@ -192,22 +198,26 @@
             <button class="btn btn-secondary">Провести занятие</button>
         </a>
     </div>
-
+    <div>
+        <a th:href="@{/pearls}" type="button">
+            <button class="btn btn-secondary">Памятные жемчужины</button>
+        </a>
+    </div>
     <div>
         <button class="btn btn-secondary" onclick="makePDF();" id="pdf">Статистика в PDF</button>
     </div>
 
 </div>
 
-<div class="container" id="log">
+<div class="container" style="max-width: none;" id="log">
     <div class="row">
         <div class="col">
             <h4>Журнал:</h4>
             <p id="dFdT"></p>
-            <table class="users" id="table">
+            <table class="table table-sm" id="table" style="width: fit-content;">
                 <thead>
                 <tr>
-                    <th>id</th>
+                    <th>#</th>
                     <th>Имя</th>
                 </tr>
                 </thead>
