@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-users-indexes
+      author: kozionov
+      changes:
+        - createIndex:
+            indexName: idx_users_login
+            tableName: users
+            columns:
+              - column:
+                  name: login
+        - createIndex:
+            indexName: idx_users_role_id
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+
+  - changeSet:
+      id: 002-add-clubs-indexes
+      author: kozionov
+      changes:
+        - createIndex:
+            indexName: idx_clubs_director_id
+            tableName: clubs
+            columns:
+              - column:
+                  name: director_id
+        - createIndex:
+            indexName: idx_clubs_name
+            tableName: clubs
+            columns:
+              - column:
+                  name: name
+
+  - changeSet:
+      id: 002-add-logs-indexes
+      author: kozionov
+      changes:
+        - createIndex:
+            indexName: idx_logs_club_id
+            tableName: logs
+            columns:
+              - column:
+                  name: club_id
+        - createIndex:
+            indexName: idx_logs_date
+            tableName: logs
+            columns:
+              - column:
+                  name: date
+
+  - changeSet:
+      id: 002-add-scores-indexes
+      author: kozionov
+      changes:
+        - createIndex:
+            indexName: idx_scores_student_id
+            tableName: scores
+            columns:
+              - column:
+                  name: student_id
+        - createIndex:
+            indexName: idx_scores_log_id
+            tableName: scores
+            columns:
+              - column:
+                  name: log_id

@@ -1,0 +1,235 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-roles-table
+      author: kozionov
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: varchar(255)
+
+  - changeSet:
+      id: 001-create-users-table
+      author: kozionov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mobile_number
+                  type: varchar(20)
+              - column:
+                  name: email
+                  type: varchar(100)
+              - column:
+                  name: login
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users_roles
+                    references: roles(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  - changeSet:
+      id: 001-create-clubs-table
+      author: kozionov
+      changes:
+        - createTable:
+            tableName: clubs
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: director_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_clubs_users
+                    references: users(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  - changeSet:
+      id: 001-create-logs-table
+      author: kozionov
+      changes:
+        - createTable:
+            tableName: logs
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: topic
+                  type: varchar(255)
+              - column:
+                  name: club_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_logs_clubs
+                    references: clubs(id)
+
+  - changeSet:
+      id: 001-create-scores-table
+      author: kozionov
+      changes:
+        - createTable:
+            tableName: scores
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: score
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: text
+              - column:
+                  name: student_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_scores_students
+                    references: users(id)
+              - column:
+                  name: log_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_scores_logs
+                    references: logs(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  - changeSet:
+      id: 001-insert-default-roles
+      author: kozionov
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: DIRECTOR
+              - column:
+                  name: description
+                  value: Директор клуба
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: STUDENT
+              - column:
+                  name: description
+                  value: Ученик клуба
+
+  - changeSet:
+      id: 001-insert-default-user
+      author: kozionov
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: Director
+              - column:
+                  name: surname
+                  value: Default
+              - column:
+                  name: login
+                  value: dir
+              - column:
+                  name: password
+                  value: $2a$10$N9qo8uLOickgx2ZMRZoMye IIgrCdDhqAJIo03BjVQdhQk6Q3YqJw
+              - column:
+                  name: role_id
+                  value: 1
+      comment: Default password is 'dir' (BCrypt encoded)
