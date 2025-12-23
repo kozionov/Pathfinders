@@ -1,20 +1,48 @@
-version: '3'
+version: '3.8'
+
 services:
-  app:
+  pathfinders-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app
+    container_name: pathfinders-app
+    restart: unless-stopped
     ports:
-      - "9090:8080"
+      - "${SERVER_PORT:-8080}:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/pathfinders
-      - SPRING_DATASOURCE_USERNAME=pathfinders
-      - SPRING_DATASOURCE_PASSWORD=pathfinders
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-pathfinders-db}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-pathfinders_db}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-pathfinders_user}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-pathfinders_password}
+      - LOGGING_LEVEL_ROOT=${LOG_LEVEL:-INFO}
+      - MANAGEMENT_SERVER_PORT=${MANAGEMENT_PORT:-8081}
+    volumes:
+      - app-logs:/var/log/pathfinders
     networks:
-      - my-network
+      - pathfinders-network
+    depends_on:
+      pathfinders-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+volumes:
+  app-logs:
+    driver: local
 
 networks:
-  my-network:
+  pathfinders-network:
     external: true
-
+    name: pathfinders-network

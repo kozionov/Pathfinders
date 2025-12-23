@@ -1,24 +1,43 @@
-version: '3'
-services:
-  postgres:
-    image: postgres:13
-    container_name: postgres
-    environment:
-      POSTGRES_DB: "pathfinders"
-      POSTGRES_USER: "pathfinders"
-      POSTGRES_PASSWORD: "pathfinders"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
-    volumes:
-      - my_volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - my-network
+version: '3.8'
 
-networks:
-  my-network:
-    external: true
+services:
+  pathfinders-db:
+    image: postgres:15-alpine
+    container_name: pathfinders-db
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-pathfinders_db}
+      - POSTGRES_USER=${POSTGRES_USER:-pathfinders_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-pathfinders_password}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - pathfinders-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pathfinders_user} -d ${POSTGRES_DB:-pathfinders_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
 volumes:
-  my_volume:
-    external: true
+  postgres-data:
+    driver: local
+    name: pathfinders-postgres-data
+
+networks:
+  pathfinders-network:
+    driver: bridge
+    name: pathfinders-network
