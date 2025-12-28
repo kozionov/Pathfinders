@@ -17,8 +17,8 @@ services:
 
 networks:
   my-network:
-    external: true
+    name: pathfinders-network
 
 volumes:
   my_volume:
-    external: true
+    name: pathfinders-data
