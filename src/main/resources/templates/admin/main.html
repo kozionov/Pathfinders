@@ -72,7 +72,9 @@
     </script>
 </head>
 <body>
-<a href="#" th:href="@{/logout}">Log Out</a>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Log Out</button>
+</form>
 <h3>Users:</h3>
 
 <table class="users">
