@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.optimized
     container_name: app
     ports:
       - "9090:8080"
@@ -16,5 +16,4 @@ services:
 
 networks:
   my-network:
-    external: true
-
+    name: pathfinders-network

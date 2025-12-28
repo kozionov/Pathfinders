@@ -6,7 +6,7 @@ Pathfinders - это веб-приложение для управления к�
 
 ## 🚀 Технологический стек
 
-- **Backend**: Java 17, Spring Boot 2.x
+- **Backend**: Java 17, Spring Boot 3.1.x
 - **Database**: PostgreSQL 14+
 - **Build Tool**: Maven
 - **Containerization**: Docker, Docker Compose
@@ -39,7 +39,7 @@ docker-compose -f docker-compose-psgr.yml up -d
 docker-compose -f docker-compose-app.yml up --build
 ```
 
-4. Откройте браузер и перейдите по адресу: `http://localhost:8080`
+4. Откройте браузер и перейдите по адресу: `http://localhost:9090`
 
 ### Вариант 2: Локальная разработка
 
@@ -60,7 +60,7 @@ java -jar target/pathfinders-*.jar
 
 ## 👤 Доступ по умолчанию
 
-- **URL**: http://localhost:8080/
+- **URL**: http://localhost:9090/
 - **Логин**: `dir`
 - **Пароль**: `dir`
 - **Роль**: Директор клуба
@@ -119,6 +119,14 @@ SPRING_DATASOURCE_PASSWORD=postgres
 
 # Порт приложения
 SERVER_PORT=8080
+
+# Управление схемой БД (dev/test)
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# Детализация ошибок (dev)
+SERVER_ERROR_INCLUDE_MESSAGE=always
+SERVER_ERROR_INCLUDE_BINDING_ERRORS=always
+SERVER_ERROR_INCLUDE_STACKTRACE=on_param
 ```
 
 ### application.yml
